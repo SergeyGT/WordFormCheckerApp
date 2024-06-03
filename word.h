@@ -16,12 +16,14 @@ enum PosTag
 {
     Noun,
     Verb,
-    Adjective,
+    Adj,
     Adverb,
+    Num,
     Pronoun,
     Preposition,
     Conjunction,
     Interjection,
+    Article,
     Determiner
 };
 
@@ -31,10 +33,16 @@ enum PosTag
  * Это перечисление содержит различные типы ошибок, которые могут возникнуть.
 */
 enum errorType {
-    doubleConsonant, /**< Двойная согласная в глаголе*/
-    doubleConsonantAdj, /**< Двойная согласная в прилагательном */
+    doubleConsonantEd, /**< Двойная согласная в глаголе*/
+    doubleConsonantIng,
+    doubleConsonantAdjEr, /**< Двойная согласная в прилагательном */
+    doubleConsonantAdjEst,
+    UnnecessarErAdj,
+    UnnecessarEstAdj,
     delVerbE, /**< Удаление 'e' в глаголе */
-    verbendS, /**< Окончание глагола на 's' */
+    verbEndS, /**< Окончание глагола на 's' */
+    verbIng,
+    saveVerbE,
     verbendES, /**< Окончание глагола на 'es' */
     nounEndS, /**< Окончание существительного на 's' */
     nounEndES, /**< Окончание существительного на 'es' */
@@ -47,6 +55,8 @@ enum errorType {
     incorrectFormSuperlatAdj, /**< Неправильная форма превосходной степени прилагательного */
     mistakesInFormatPossessiveFormNouns, /**< Ошибки в формате притяжательной формы существительных */
     mistakesInFormatPossessiveMultipleFormNoun,
+    irregularNumForm,
+    incorrectNumForm,
     unknownError, /**< Неизвестная ошибка */
     zeroMistakes /**< Нет ошибок */
 };
@@ -65,11 +75,15 @@ public:
     int id; /**< уникальный идентификатор(номер) слова */
     PosTag postag; /**< Часть речи слова */
 public:
-    Word() {
-        wordText = "";
-        postag = Noun;
-        id = 0;
-    }
+//    Word() {
+//        wordText = "";
+//        postag = Noun;
+//        id = 0;
+//    }
+
+    Word() = default;
+    Word(const QString &text, int idx, PosTag tag)
+        : wordText(text), id(idx), postag(tag) {}
     /**
      * @brief Конструктор класса Word.
      * @param text Текст слова.
@@ -114,6 +128,9 @@ public:
      */
     ErrorInfo findMistakeAdj(Word other);
 
+    ErrorInfo findMistakeNum(Word other);
+
+
     static std::vector<QString> OnlyPluralNouns;
     static std::vector<QString> IrregularNouns;
     static std::vector<QString> IrregularVerbs;
@@ -145,10 +162,15 @@ public:
 */
 class Sentence
 {
-private:
+public:
     QString sentenceText; /**< Текст предложения */
     QList<Word> words; /**< Список всех слов */
 public:
+    Sentence()
+    {
+
+    }
+
     /**
      * @brief Конструктор класса Sentence.
      * @param text Текст предложения.
@@ -163,6 +185,6 @@ public:
      * @param other Другое предложение для сравнения.
      * @return Список ошибок, возникших при сравнении.
      */
-    QList<ErrorInfo> compare(Sentence other) const;
+    QList<ErrorInfo> compare(Sentence other);
 
 };

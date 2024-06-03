@@ -1,23 +1,12 @@
 #include <QtTest/QtTest>
 #include <word.h>
+#include "test_word_findMistakeNoun.h"
 
-class TestWordfindMistakeNoun : public QObject {
-    Q_OBJECT
+TestWordfindMistakeNoun::TestWordfindMistakeNoun(QObject *parent) :
+    QObject(parent)
+{
 
-private slots:
-    void testPossessiveSingularNoun();
-    void testPossessivePluralNoun();
-    void testPossessivePluralNounAndEndS();
-    void testPossessivePluralNounAndEndES();
-    void testPossessivePluralNounEndES();
-    void testOnlyPluralformNoun();
-    void testIrregularFormNoun();
-    void testNounEndS();
-    void testNounEndS1();
-    void testNounEndEs();
-    void testNounEndEs2();
-    void testNounZeroMistakes();
-};
+}
 
 void TestWordfindMistakeNoun::testPossessiveSingularNoun() {
     Word word1;
@@ -83,7 +72,6 @@ void TestWordfindMistakeNoun::testPossessivePluralNounAndEndES() {
     QCOMPARE(error.idxErroneousWord, 3);
 }
 
-////////////// Добавить этот тест в протокол  /////////////////////
 void TestWordfindMistakeNoun::testPossessivePluralNounEndES() {
     Word word1;
     word1.wordText = "dishs";
@@ -148,6 +136,22 @@ void TestWordfindMistakeNoun::testNounEndS() {
     QCOMPARE(error.idxErroneousWord, 5);
 }
 
+void TestWordfindMistakeNoun::testNounEndS2() {
+    Word word1;
+    word1.wordText = "girrafs";
+    word1.postag = Noun;
+    word1.id = 5;
+
+    Word word2;
+    word2.wordText = "girrafes";
+    word2.postag = Noun;
+    word2.id = 5;
+
+    ErrorInfo error = word1.findMistakeNoun(word2);
+    QCOMPARE(error.error, nounEndS);
+    QCOMPARE(error.idxErroneousWord, 5);
+}
+
 void TestWordfindMistakeNoun::testNounEndS1() {
     Word word1;
     word1.wordText = "boates";
@@ -180,6 +184,55 @@ void TestWordfindMistakeNoun::testNounEndEs() {
     QCOMPARE(error.idxErroneousWord, 5);
 }
 
+
+void TestWordfindMistakeNoun::testNounEndEs1() {
+    Word word1;
+    word1.wordText = "drivs";
+    word1.postag = Noun;
+    word1.id = 5;
+
+    Word word2;
+    word2.wordText = "drives";
+    word2.postag = Noun;
+    word2.id = 5;
+
+    ErrorInfo error = word1.findMistakeNoun(word2);
+    QCOMPARE(error.error, nounEndES);
+    QCOMPARE(error.idxErroneousWord, 5);
+}
+
+void TestWordfindMistakeNoun::testNounEndEs2() {
+    Word word1;
+    word1.wordText = "bodys";
+    word1.postag = Noun;
+    word1.id = 5;
+
+    Word word2;
+    word2.wordText = "bodies";
+    word2.postag = Noun;
+    word2.id = 5;
+
+    ErrorInfo error = word1.findMistakeNoun(word2);
+    QCOMPARE(error.error, nounEndES);
+    QCOMPARE(error.idxErroneousWord, 5);
+}
+
+void TestWordfindMistakeNoun::testNounEndEs3() {
+    Word word1;
+    word1.wordText = "heros";
+    word1.postag = Noun;
+    word1.id = 5;
+
+    Word word2;
+    word2.wordText = "heroes";
+    word2.postag = Noun;
+    word2.id = 5;
+
+    ErrorInfo error = word1.findMistakeNoun(word2);
+    QCOMPARE(error.error, nounEndES);
+    QCOMPARE(error.idxErroneousWord, 5);
+}
+
 void TestWordfindMistakeNoun::testNounZeroMistakes() {
     Word word1;
     word1.wordText = "cats";
@@ -196,4 +249,5 @@ void TestWordfindMistakeNoun::testNounZeroMistakes() {
     QCOMPARE(error.idxErroneousWord, 5);
 }
 
-////////// оканчание на гласную body girrafe hero /////////
+
+

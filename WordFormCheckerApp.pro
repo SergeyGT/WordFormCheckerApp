@@ -1,5 +1,7 @@
 QT -= gui
 
+QT += testlib
+
 CONFIG += c++11 console
 CONFIG -= app_bundle
 
@@ -19,10 +21,18 @@ SOURCES += \
         main.cpp \
         morph.c \
         search.c \
+    test_sentence_compare.cpp \
+    test_word_comparewords.cpp \
+        test_word_findMistakeNoun.cpp \
+    test_word_findmistakeadj.cpp \
+    test_word_findmistakenum.cpp \
+    test_word_findmistakeverb.cpp \
         wnglobal.c \
         wnhelp.c \
         wnrtl.c \
-        wnutil.c
+        wnutil.c \
+        word.cpp \
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -30,4 +40,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    wn.h
+    test_sentence_compare.h \
+    test_word_comparewords.h \
+    test_word_findMistakeNoun.h \
+    test_word_findmistakeadj.h \
+    test_word_findmistakenum.h \
+    test_word_findmistakeverb.h \
+    wn.h \
+    word.h
