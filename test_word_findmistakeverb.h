@@ -19,6 +19,9 @@ private slots:
     void testVerbDropE();
     void testIrregularVerbIngForm();
     void testSaveEBeforeS();
+    void bothWordsNotVerb();
+    void incorrectWordNotVerb();
+    void correctWordNotVerb();
     void testNoErrorsFound();
 };
 

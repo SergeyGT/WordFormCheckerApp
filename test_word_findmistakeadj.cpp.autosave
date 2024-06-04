@@ -1,4 +1,5 @@
 #include "test_word_findmistakeadj.h"
+#include <iostream>
 
 test_word_findMistakeAdj::test_word_findMistakeAdj(QObject *parent) :
     QObject(parent)
@@ -167,7 +168,7 @@ void test_word_findMistakeAdj::bothWordsNotAdj() {
         QCOMPARE(error.error, zeroMistakes);
         QCOMPARE(error.idxErroneousWord, 5);
     } catch (const std::exception& e) {
-
+        std::cerr << "Exception: " << e.what() << std::endl;
     }
 
 }
@@ -189,8 +190,8 @@ void test_word_findMistakeAdj::incorrectWordNotAdj() {
         QCOMPARE(error.error, zeroMistakes);
         QCOMPARE(error.idxErroneousWord, 5);
     } catch (const std::exception& e) {
-
-    }
+        std::cerr << "Exception: " << e.what() << std::endl;
+    }   
 
 }
 
@@ -211,7 +212,7 @@ void test_word_findMistakeAdj::correctWordNotAdj() {
         QCOMPARE(error.error, zeroMistakes);
         QCOMPARE(error.idxErroneousWord, 5);
     } catch (const std::exception& e) {
-
+        std::cerr << "Exception: " << e.what() << std::endl;
     }
 
 }

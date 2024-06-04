@@ -14,6 +14,9 @@ private slots:
     void testIncorrectNumeralFormTh();
     void testIncorrectNumeralFormFth();
     void testIncorrectNumeralFormIeth();
+    void bothWordsNotNum();
+    void incorrectWordNotNum();
+    void correctWordNotNum();
     void testNoMistakesInNumeral();
 
 };

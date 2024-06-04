@@ -15,6 +15,10 @@ private slots:
     void testFunctionSelectionForVerb();
     void testFunctionSelectionForAdjective();
     void testFunctionSelectionForNumeral();
+    void bothWordsNotCorrectPosTag();
+    void incorrectWordNotCorrectPosTag();
+    void correctWordNotCorrectPosTag();
+    void testNoErrors();
 };
 
 #endif // TEST_WORD_COMPAREWORDS_H

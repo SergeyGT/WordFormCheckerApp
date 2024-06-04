@@ -6,6 +6,7 @@ test_sentence_compare::test_sentence_compare(QObject *parent) :
 
 }
 
+// №1 Ошибок нет
 void test_sentence_compare::testNoErrors()
 {
     Sentence sentence1;
@@ -29,6 +30,7 @@ void test_sentence_compare::testNoErrors()
     }
 }
 
+// №2 Базовый тест - одна ошибка в предложении.
 void test_sentence_compare::testSingleErrorInSentence() {
     Sentence sentence1;
     sentence1.sentenceText = "The cat is runing";
@@ -57,11 +59,12 @@ void test_sentence_compare::testSingleErrorInSentence() {
 
 }
 
+// №3 Более одной ошибки в предложении.
 void test_sentence_compare::testMultipleErrorsInSentence() {
     Sentence sentence1;
-    sentence1.sentenceText = "The cat runes fast";
+    sentence1.sentenceText = "The cates runes fast";
     sentence1.words.append(Word("The", 0, Article));
-    sentence1.words.append(Word("cat", 1, Noun));
+    sentence1.words.append(Word("cates", 1, Noun));
     sentence1.words.append(Word("runes", 2, Verb));
     sentence1.words.append(Word("fast", 3, Adj));
 
@@ -84,6 +87,7 @@ void test_sentence_compare::testMultipleErrorsInSentence() {
     QCOMPARE(errors[3].idxErroneousWord, 3);
 }
 
+// К№4 омплексный тест - ошибки в каждой части речи.
 void test_sentence_compare::testErrorInEachPartOfSpeech() {
     Sentence sentence1;
     sentence1.sentenceText = "The oneth cates was biger than a hamster and runed very fast";
@@ -141,6 +145,7 @@ void test_sentence_compare::testErrorInEachPartOfSpeech() {
     QCOMPARE(errors[10].idxErroneousWord, 10);
 }
 
+// №5 Ошибка в каждом слове
 void test_sentence_compare::testErrorInEveryWord() {
     Sentence sentence1;
     sentence1.sentenceText = "Doges runed";
@@ -160,6 +165,7 @@ void test_sentence_compare::testErrorInEveryWord() {
     QCOMPARE(errors[1].idxErroneousWord, 1);
 }
 
+// №6 Ошибка в существительном
 void test_sentence_compare::testErrorInNoun() {
     Sentence sentence1;
     sentence1.sentenceText = "The mans are here";
@@ -187,6 +193,7 @@ void test_sentence_compare::testErrorInNoun() {
     QCOMPARE(errors[3].idxErroneousWord, 3);
 }
 
+// №7 Ошибка в прилагательном
 void test_sentence_compare::testErrorInAdjective() {
     Sentence sentence1;
     sentence1.sentenceText = "The big cat is here";
@@ -218,6 +225,7 @@ void test_sentence_compare::testErrorInAdjective() {
     QCOMPARE(errors[4].idxErroneousWord, 4);
 }
 
+// №8 Ошибка в числительном
 void test_sentence_compare::testErrorInNumeral() {
     Sentence sentence1;
     sentence1.sentenceText = "The twoth prize is awarded";
@@ -249,6 +257,7 @@ void test_sentence_compare::testErrorInNumeral() {
     QCOMPARE(errors[4].idxErroneousWord, 4);
 }
 
+// №9 Комплексный тест-ошибка в существительном и глаголе
 void test_sentence_compare::testComplexErrorNounVerb() {
     Sentence sentence1;
     sentence1.sentenceText = "The mans are runing";
@@ -276,6 +285,7 @@ void test_sentence_compare::testComplexErrorNounVerb() {
     QCOMPARE(errors[3].idxErroneousWord, 3);
 }
 
+// №10 Комплексный тест – ошибка в прилагательном и числительном
 void test_sentence_compare::testComplexErrorAdjectiveNumeral() {
     Sentence sentence1;
     sentence1.sentenceText = "The twoth prize is bigger";

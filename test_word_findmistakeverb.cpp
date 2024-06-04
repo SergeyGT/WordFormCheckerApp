@@ -1,4 +1,5 @@
 #include "test_word_findmistakeverb.h"
+#include <iostream>
 
 Test_word_findMistakeVerb::Test_word_findMistakeVerb(QObject *parent) :
     QObject(parent)
@@ -6,7 +7,7 @@ Test_word_findMistakeVerb::Test_word_findMistakeVerb(QObject *parent) :
 
 }
 
-
+// №1 Ошибка в удвоении согласной перед окончанием "ed" в глаголе
 void Test_word_findMistakeVerb::testDoubleConsonantBeforeEdVerb()
 {
     Word word1;
@@ -24,6 +25,7 @@ void Test_word_findMistakeVerb::testDoubleConsonantBeforeEdVerb()
     QCOMPARE(error.idxErroneousWord, 2);
 }
 
+// №2 Ошибка в удвоении согласной перед окончанием "ed" в глаголе
 void Test_word_findMistakeVerb::testDoubleConsonantBeforeIngVerb()
 {
     Word word1;
@@ -41,6 +43,7 @@ void Test_word_findMistakeVerb::testDoubleConsonantBeforeIngVerb()
     QCOMPARE(error.idxErroneousWord, 4);
 }
 
+// №3 Ошибка в неправильной форме неправильного глагола
 void Test_word_findMistakeVerb::testIrregularVerbForm()
 {
     Word word1;
@@ -58,6 +61,7 @@ void Test_word_findMistakeVerb::testIrregularVerbForm()
     QCOMPARE(error.idxErroneousWord, 2);
 }
 
+// Ошибка в неправильной форме неправильного глагола
 void Test_word_findMistakeVerb::testIrregularVerbForm1()
 {
     Word word1;
@@ -75,6 +79,7 @@ void Test_word_findMistakeVerb::testIrregularVerbForm1()
     QCOMPARE(error.idxErroneousWord, 2);
 }
 
+// №4 Ошибка в окончании –es глагола
 void Test_word_findMistakeVerb::testVerbEndsWithEs()
 {
     Word word1;
@@ -92,6 +97,7 @@ void Test_word_findMistakeVerb::testVerbEndsWithEs()
     QCOMPARE(error.idxErroneousWord, 1);
 }
 
+// №5 Ошибка в окончании –s глагола
 void Test_word_findMistakeVerb::testVerbEndsWithS()
 {
     Word word1;
@@ -109,6 +115,7 @@ void Test_word_findMistakeVerb::testVerbEndsWithS()
     QCOMPARE(error.idxErroneousWord, 1);
 }
 
+// №6 Ошибка в удалении "e" у глагола
 void Test_word_findMistakeVerb::testVerbDropE()
 {
     Word word1;
@@ -126,6 +133,7 @@ void Test_word_findMistakeVerb::testVerbDropE()
     QCOMPARE(error.idxErroneousWord, 1);
 }
 
+// №7 Ошибка в образовании глагола с окончанием –ing у неправильного глагола
 void Test_word_findMistakeVerb::testIrregularVerbIngForm()
 {
     Word word1;
@@ -143,6 +151,7 @@ void Test_word_findMistakeVerb::testIrregularVerbIngForm()
     QCOMPARE(error.idxErroneousWord, 1);
 }
 
+// №8 Сохранение окончания – e у глагола в 3-м л.
 void Test_word_findMistakeVerb::testSaveEBeforeS()
 {
     Word word1;
@@ -160,6 +169,7 @@ void Test_word_findMistakeVerb::testSaveEBeforeS()
     QCOMPARE(error.idxErroneousWord, 1);
 }
 
+// №9 Ошибок нет
 void Test_word_findMistakeVerb::testNoErrorsFound()
 {
     Word word1;
@@ -175,4 +185,70 @@ void Test_word_findMistakeVerb::testNoErrorsFound()
     ErrorInfo error = word1.findMistakeVerb(word2);
     QCOMPARE(error.error, zeroMistakes);
     QCOMPARE(error.idxErroneousWord, 1);
+}
+
+// №10 Оба слова не глаголы
+void Test_word_findMistakeVerb::bothWordsNotVerb() {
+    Word word1;
+    word1.wordText = "box";
+    word1.postag = Noun;
+    word1.id = 5;
+
+    Word word2;
+    word2.wordText = "boxes";
+    word2.postag = Noun;
+    word2.id = 5;
+
+    try {
+        ErrorInfo error = word1.findMistakeVerb(word2);
+        QCOMPARE(error.error, zeroMistakes);
+        QCOMPARE(error.idxErroneousWord, 5);
+    } catch (const std::exception& e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
+    }
+
+}
+
+// №11 Неправильное слово не глагол
+void Test_word_findMistakeVerb::incorrectWordNotVerb() {
+    Word word1;
+    word1.wordText = "box";
+    word1.postag = Noun;
+    word1.id = 5;
+
+    Word word2;
+    word2.wordText = "goes";
+    word2.postag = Verb;
+    word2.id = 5;
+
+    try {
+        ErrorInfo error = word1.findMistakeVerb(word2);
+        QCOMPARE(error.error, zeroMistakes);
+        QCOMPARE(error.idxErroneousWord, 5);
+    } catch (const std::exception& e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
+    }
+
+}
+
+// №12 Правильное слово не глагол
+void Test_word_findMistakeVerb::correctWordNotVerb() {
+    Word word1;
+    word1.wordText = "go";
+    word1.postag = Noun;
+    word1.id = 5;
+
+    Word word2;
+    word2.wordText = "boxes";
+    word2.postag = Noun;
+    word2.id = 5;
+
+    try {
+        ErrorInfo error = word1.findMistakeVerb(word2);
+        QCOMPARE(error.error, zeroMistakes);
+        QCOMPARE(error.idxErroneousWord, 5);
+    } catch (const std::exception& e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
+    }
+
 }

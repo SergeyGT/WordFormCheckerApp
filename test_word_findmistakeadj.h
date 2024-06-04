@@ -17,6 +17,9 @@ private slots:
     void testYBeforeEr();
     void testYBeforeEst();
     void testAdjectiveException();
+    void bothWordsNotAdj();
+    void incorrectWordNotAdj();
+    void correctWordNotAdj();
     void testNoErrorsFound();
 };
 
