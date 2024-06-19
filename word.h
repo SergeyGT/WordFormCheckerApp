@@ -2,7 +2,10 @@
 #include <QString>
 #include <vector>
 #include <QList>
-
+#include <QCoreApplication>
+#include "wn.h"
+#include <iostream>
+#include <fstream>
 
 class ErrorInfo;
 
@@ -41,6 +44,7 @@ enum errorType {
     UnnecessarEstAdj,
     delVerbE, /**< Удаление 'e' в глаголе */
     verbEndS, /**< Окончание глагола на 's' */
+    verbEndEs,
     verbIng,
     saveVerbE,
     verbendES, /**< Окончание глагола на 'es' */
@@ -61,6 +65,9 @@ enum errorType {
     zeroMistakes /**< Нет ошибок */
 };
 
+
+// Объявление вспомогательной функции для приведения слова в начальную форму
+QString base_form(const QString& word, int pos);
 
 
 /**

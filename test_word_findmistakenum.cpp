@@ -112,10 +112,11 @@ void test_word_findMistakeNum::bothWordsNotNum() {
 
     try {
         ErrorInfo error = word1.findMistakeNum(word2);
-        QCOMPARE(error.error, zeroMistakes);
-        QCOMPARE(error.idxErroneousWord, 5);
+        // Ожидаем, что эта часть не выполнится из-за исключения
+        QVERIFY(false);
     } catch (const std::exception& e) {
-        std::cerr << "Exception: " << e.what() << std::endl;
+        // Проверяем, что сообщение сообщение соответствует ожидаемому значению
+        QCOMPARE(std::string(e.what()), std::string("Both words are not numerals"));
     }
 
 }
@@ -134,10 +135,11 @@ void test_word_findMistakeNum::incorrectWordNotNum() {
 
     try {
         ErrorInfo error = word1.findMistakeNum(word2);
-        QCOMPARE(error.error, zeroMistakes);
-        QCOMPARE(error.idxErroneousWord, 5);
+        // Ожидаем, что эта часть не выполнится из-за исключения
+        QVERIFY(false);
     } catch (const std::exception& e) {
-        std::cerr << "Exception: " << e.what() << std::endl;
+        // Проверяем, что сообщение сообщение соответствует ожидаемому значению
+        QCOMPARE(std::string(e.what()), std::string("The incorrect word is not a numeral"));
     }
 
 }
@@ -156,10 +158,11 @@ void test_word_findMistakeNum::correctWordNotNum() {
 
     try {
         ErrorInfo error = word1.findMistakeNum(word2);
-        QCOMPARE(error.error, zeroMistakes);
-        QCOMPARE(error.idxErroneousWord, 5);
+        // Ожидаем, что эта часть не выполнится из-за исключения
+        QVERIFY(false);
     } catch (const std::exception& e) {
-        std::cerr << "Exception: " << e.what() << std::endl;
+        // Проверяем, что сообщение сообщение соответствует ожидаемому значению
+        QCOMPARE(std::string(e.what()), std::string("The correct word is not a numeral"));
     }
 
 }

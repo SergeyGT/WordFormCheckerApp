@@ -201,10 +201,11 @@ void Test_word_findMistakeVerb::bothWordsNotVerb() {
 
     try {
         ErrorInfo error = word1.findMistakeVerb(word2);
-        QCOMPARE(error.error, zeroMistakes);
-        QCOMPARE(error.idxErroneousWord, 5);
+        // Ожидаем, что эта часть не выполнится из-за исключения
+        QVERIFY(false);
     } catch (const std::exception& e) {
-        std::cerr << "Exception: " << e.what() << std::endl;
+        // Проверяем, что сообщение сообщение соответствует ожидаемому значению
+        QCOMPARE(std::string(e.what()), std::string("Both words are not verbs"));
     }
 
 }
@@ -223,10 +224,11 @@ void Test_word_findMistakeVerb::incorrectWordNotVerb() {
 
     try {
         ErrorInfo error = word1.findMistakeVerb(word2);
-        QCOMPARE(error.error, zeroMistakes);
-        QCOMPARE(error.idxErroneousWord, 5);
+        // Ожидаем, что эта часть не выполнится из-за исключения
+        QVERIFY(false);
     } catch (const std::exception& e) {
-        std::cerr << "Exception: " << e.what() << std::endl;
+        // Проверяем, что сообщение сообщение соответствует ожидаемому значению
+        QCOMPARE(std::string(e.what()), std::string("The incorrect word is not a verb"));
     }
 
 }
@@ -235,7 +237,7 @@ void Test_word_findMistakeVerb::incorrectWordNotVerb() {
 void Test_word_findMistakeVerb::correctWordNotVerb() {
     Word word1;
     word1.wordText = "go";
-    word1.postag = Noun;
+    word1.postag = Verb;
     word1.id = 5;
 
     Word word2;
@@ -245,10 +247,11 @@ void Test_word_findMistakeVerb::correctWordNotVerb() {
 
     try {
         ErrorInfo error = word1.findMistakeVerb(word2);
-        QCOMPARE(error.error, zeroMistakes);
-        QCOMPARE(error.idxErroneousWord, 5);
+        // Ожидаем, что эта часть не выполнится из-за исключения
+        QVERIFY(false);
     } catch (const std::exception& e) {
-        std::cerr << "Exception: " << e.what() << std::endl;
+        // Проверяем, что сообщение сообщение соответствует ожидаемому значению
+        QCOMPARE(std::string(e.what()), std::string("The correct word is not a verb"));
     }
 
 }

@@ -97,7 +97,7 @@ void test_word_compareWords::testNoErrors()
     QCOMPARE(error.idxErroneousWord, 1);
 }
 
-// №6 Неправильное слово не относится к (Noun, Adj, Num, Verb)
+// №6 Оба слова не относится к (Noun, Adj, Num, Verb)
 void test_word_compareWords::bothWordsNotCorrectPosTag() {
     Word word1;
     word1.wordText = "but";
@@ -111,10 +111,11 @@ void test_word_compareWords::bothWordsNotCorrectPosTag() {
 
     try {
         ErrorInfo error = word1.compareWords(word2);
-        QCOMPARE(error.error, zeroMistakes);
-        QCOMPARE(error.idxErroneousWord, 5);
+        // Ожидаем, что эта часть не выполнится из-за исключения
+        QVERIFY(false);
     } catch (const std::exception& e) {
-        std::cerr << "Exception: " << e.what() << std::endl;
+        // Проверяем, что сообщение сообщение соответствует ожидаемому значению
+        QCOMPARE(std::string(e.what()), std::string("Both words are not a Noun, Adjective, Numeral, or Verb"));
     }
 
 }
@@ -133,15 +134,16 @@ void test_word_compareWords::incorrectWordNotCorrectPosTag() {
 
     try {
         ErrorInfo error = word1.compareWords(word2);
-        QCOMPARE(error.error, zeroMistakes);
-        QCOMPARE(error.idxErroneousWord, 5);
+        // Ожидаем, что эта часть не выполнится из-за исключения
+        QVERIFY(false);
     } catch (const std::exception& e) {
-        std::cerr << "Exception: " << e.what() << std::endl;
+        // Проверяем, что сообщение сообщение соответствует ожидаемому значению
+        QCOMPARE(std::string(e.what()), std::string("Incorrect word is not a Noun, Adjective, Numeral, or Verb"));
     }
 
 }
 
-// №8 Неправильное слово не относится к (Noun, Adj, Num, Verb)
+// №8 Правильное слово не относится к (Noun, Adj, Num, Verb)
 void test_word_compareWords::correctWordNotCorrectPosTag() {
     Word word1;
     word1.wordText = "oneth";
@@ -155,10 +157,11 @@ void test_word_compareWords::correctWordNotCorrectPosTag() {
 
     try {
         ErrorInfo error = word1.compareWords(word2);
-        QCOMPARE(error.error, zeroMistakes);
-        QCOMPARE(error.idxErroneousWord, 5);
+        // Ожидаем, что эта часть не выполнится из-за исключения
+        QVERIFY(false);
     } catch (const std::exception& e) {
-        std::cerr << "Exception: " << e.what() << std::endl;
+        // Проверяем, что сообщение сообщение соответствует ожидаемому значению
+        QCOMPARE(std::string(e.what()), std::string("Correct word is not a Noun, Adjective, Numeral, or Verb"));
     }
 
 }

@@ -1,4 +1,5 @@
 #include "test_word_findmistakeadj.h"
+#include <iostream>
 
 test_word_findMistakeAdj::test_word_findMistakeAdj(QObject *parent) :
     QObject(parent)
@@ -69,7 +70,7 @@ void test_word_findMistakeAdj::testYBeforeEr()
     word1.id = 2;
 
     Word word2;
-    word2.wordText = "carried";
+    word2.wordText = "carrier";
     word2.postag = Adj;
     word2.id = 2;
 
@@ -164,10 +165,11 @@ void test_word_findMistakeAdj::bothWordsNotAdj() {
 
     try {
         ErrorInfo error = word1.findMistakeAdj(word2);
-        QCOMPARE(error.error, zeroMistakes);
-        QCOMPARE(error.idxErroneousWord, 5);
+        // Ожидаем, что эта часть не выполнится из-за исключения
+        QVERIFY(false);
     } catch (const std::exception& e) {
-
+        // Проверяем, что сообщение сообщение соответствует ожидаемому значению
+        QCOMPARE(std::string(e.what()), std::string("Both words are not adjectives"));
     }
 
 }
@@ -186,10 +188,11 @@ void test_word_findMistakeAdj::incorrectWordNotAdj() {
 
     try {
         ErrorInfo error = word1.findMistakeAdj(word2);
-        QCOMPARE(error.error, zeroMistakes);
-        QCOMPARE(error.idxErroneousWord, 5);
+        // Ожидаем, что эта часть не выполнится из-за исключения
+        QVERIFY(false);
     } catch (const std::exception& e) {
-
+        // Проверяем, что сообщение сообщение соответствует ожидаемому значению
+        QCOMPARE(std::string(e.what()), std::string("The incorrect word is not an adjective"));
     }
 
 }
@@ -208,10 +211,11 @@ void test_word_findMistakeAdj::correctWordNotAdj() {
 
     try {
         ErrorInfo error = word1.findMistakeAdj(word2);
-        QCOMPARE(error.error, zeroMistakes);
-        QCOMPARE(error.idxErroneousWord, 5);
+        // Ожидаем, что эта часть не выполнится из-за исключения
+        QVERIFY(false);
     } catch (const std::exception& e) {
-
+        // Проверяем, что сообщение сообщение соответствует ожидаемому значению
+        QCOMPARE(std::string(e.what()), std::string("The correct word is not an adjective"));
     }
 
 }

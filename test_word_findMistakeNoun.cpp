@@ -195,10 +195,11 @@ void TestWordfindMistakeNoun::bothWordsNotNoun() {
 
     try {
         ErrorInfo error = word1.findMistakeNoun(word2);
-        QCOMPARE(error.error, zeroMistakes);
-        QCOMPARE(error.idxErroneousWord, 5);
+        // Ожидаем, что эта часть не выполнится из-за исключения
+        QVERIFY(false);
     } catch (const std::exception& e) {
-        std::cerr << "Exception: " << e.what() << std::endl;
+        // Проверяем, что сообщение сообщение соответствует ожидаемому значению
+        QCOMPARE(std::string(e.what()), std::string("Both words are not nouns"));
     }
 
 }
@@ -217,10 +218,11 @@ void TestWordfindMistakeNoun::incorrectWordNotNoun() {
 
     try {
         ErrorInfo error = word1.findMistakeNoun(word2);
-        QCOMPARE(error.error, zeroMistakes);
-        QCOMPARE(error.idxErroneousWord, 5);
+        // Ожидаем, что эта часть не выполнится из-за исключения
+        QVERIFY(false);
     } catch (const std::exception& e) {
-        std::cerr << "Exception: " << e.what() << std::endl;
+        // Проверяем, что сообщение сообщение соответствует ожидаемому значению
+        QCOMPARE(std::string(e.what()), std::string("The incorrect word is not a noun"));
     }
 
 }
@@ -239,13 +241,55 @@ void TestWordfindMistakeNoun::correctWordNotNoun() {
 
     try {
         ErrorInfo error = word1.findMistakeNoun(word2);
-        QCOMPARE(error.error, zeroMistakes);
-        QCOMPARE(error.idxErroneousWord, 5);
+        // Ожидаем, что эта часть не выполнится из-за исключения
+        QVERIFY(false);
     } catch (const std::exception& e) {
-        std::cerr << "Exception: " << e.what() << std::endl;
+        // Проверяем, что сообщение сообщение соответствует ожидаемому значению
+        QCOMPARE(std::string(e.what()), std::string("The correct word is not a noun"));
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Ошибка в окончаниии s глагола, заканчивающегося на букву -e
 void TestWordfindMistakeNoun::testNounEndS2() {
