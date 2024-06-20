@@ -1,8 +1,163 @@
 #include <QCoreApplication>
 #include "wn.h"
 #include <iostream>
+#include <QFile>
+#include <QTextStream>
 #include <fstream>
 #include "word.h"
+
+// Перечисление ошибок при обработке предложений
+enum class sentencesProcessingCodes {
+    sentencesProcessed,
+    fewerWordsThanTags,
+    fewerTagsThanWords,
+    wrongPosTag
+};
+
+// Класс для обработки ошибок предложения
+class SentenceDataError {
+public:
+    sentencesProcessingCodes sentenceProcessingResult;
+    int countWords = 0;
+
+    void printSentenceDataMessage() {}
+};
+
+
+enum class fileProcessingCodes {
+    filesProcessed,
+    inputCorrectFileNotExist,
+    inputIncorrectFileNotExist,
+    cantCreateOutputFile,
+    wrongStrCountInCorrectFile,
+    wrongStrCountInVerifiedFile,
+    correctFileIsEmpty,
+    invalidFileIsEmpty,
+    posTagsAreEmpty
+};
+
+class InvalidInputError {
+public:
+    fileProcessingCodes fileProcessingResult;
+    int countOfWordsInFile = 0;
+    int countOfPosTagsInFile = 0;
+    void printInputDataMessage() {}
+};
+
+// Функция преобразования QString в PosTag
+PosTag stringToPosTag(const QString& posTagStr) {
+    static const QHash<QString, PosTag> posTagMap = {
+        {"NOUN", PosTag::Noun},
+        {"VERB", PosTag::Verb},
+        {"ADJ", PosTag::Adj},
+        {"NUM", PosTag::Num},
+        // Добавить остальные поз-теги
+    };
+
+    return posTagMap.value(posTagStr, PosTag::Noun); // или другой дефолтный PosTag
+}
+
+// Функция для заполнения объектов класса Sentence
+void writeToSentenceObjects(const QString& wrongSentence, const QString& correctSentence, const QString& posTags, Sentence& incorrect, Sentence& correct, SentenceDataError& errors) {
+    // Разделение строк на слова и теги
+    QStringList wrongWords = wrongSentence.split(" ", QString::SkipEmptyParts);
+    QStringList correctWords = correctSentence.split(" ", QString::SkipEmptyParts);
+    QStringList posTagList = posTags.split(" ", QString::SkipEmptyParts);
+
+    // Проверка на наличие ошибок в количестве слов и тегов
+    if (posTagList.size() != correctWords.size() || posTagList.size() != wrongWords.size()) {
+        if (posTagList.size() < wrongWords.size()) {
+            errors.sentenceProcessingResult = sentencesProcessingCodes::fewerTagsThanWords;
+        } else if (posTagList.size() > wrongWords.size()) {
+            errors.sentenceProcessingResult = sentencesProcessingCodes::fewerWordsThanTags;
+        } else {
+            errors.sentenceProcessingResult = sentencesProcessingCodes::wrongPosTag;
+        }
+        errors.printSentenceDataMessage();
+        return;
+    }
+
+    // Заполнение объектов Sentence
+    for (int i = 0; i < wrongWords.size(); ++i) {
+        Word wrongWord;
+        wrongWord.wordText = wrongWords[i];
+        wrongWord.postag = stringToPosTag(posTagList[i]);
+        wrongWord.id = i;
+        incorrect.words.append(wrongWord);
+    }
+
+    for (int i = 0; i < correctWords.size(); ++i) {
+        Word correctWord;
+        correctWord.wordText = correctWords[i];
+        correctWord.postag = stringToPosTag(posTagList[i]);
+        correctWord.id = i;
+        correct.words.append(correctWord);
+    }
+
+    // Сохранение текстов предложений
+    incorrect.sentenceText = wrongSentence;
+    correct.sentenceText = correctSentence;
+
+    // Установка успешного результата обработки
+    errors.sentenceProcessingResult = sentencesProcessingCodes::sentencesProcessed;
+}
+
+
+void readFiles(const QString& filename1, const QString& filename2, QString& wrongSentence, QString& correctSentence, QString& posTags, InvalidInputError& errors) {
+    // Открыть первый файл по имени, полученному в качестве входного параметра
+    QFile file1(filename1);
+    if (!file1.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        errors.fileProcessingResult = fileProcessingCodes::inputIncorrectFileNotExist;
+        errors.printInputDataMessage();
+        return;
+    }
+
+    // Прочитать первую строку из первого файла
+    QTextStream in1(&file1);
+    if (in1.atEnd()) {
+        errors.fileProcessingResult = fileProcessingCodes::invalidFileIsEmpty;
+        errors.printInputDataMessage();
+        file1.close();
+        return;
+    }
+    wrongSentence = in1.readLine();
+
+    // Открыть второй файл по имени, полученному в качестве входного параметра
+    QFile file2(filename2);
+    if (!file2.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        errors.fileProcessingResult = fileProcessingCodes::inputCorrectFileNotExist;
+        errors.printInputDataMessage();
+        file1.close();
+        return;
+    }
+
+    // Прочитать первые две строки из второго файла
+    QTextStream in2(&file2);
+    if (in2.atEnd()) {
+        errors.fileProcessingResult = fileProcessingCodes::correctFileIsEmpty;
+        errors.printInputDataMessage();
+        file1.close();
+        file2.close();
+        return;
+    }
+    correctSentence = in2.readLine();
+    if (in2.atEnd()) {
+        errors.fileProcessingResult = fileProcessingCodes::posTagsAreEmpty;
+        errors.printInputDataMessage();
+        file1.close();
+        file2.close();
+        return;
+    }
+    posTags = in2.readLine();
+
+    // Установить успешный результат обработки файлов в объекте InputDataError
+    errors.fileProcessingResult = fileProcessingCodes::filesProcessed;
+
+    // Закрыть оба файла
+    file1.close();
+    file2.close();
+}
+
 
 
 
@@ -27,25 +182,40 @@
 
 
 
-int main() {
-    // Инициализация тестовых данных
-    Word word1;
-    word1.wordText = "go";
-    word1.postag = Verb;
-    word1.id = 1;
+int main(int argc, char *argv[]) {
 
-    Word word2;
-    word2.wordText = "goes";
-    word2.postag = Verb;
-    word2.id = 1;
+    if (argc < 4) {
+        std::cerr << "Usage: " << argv[0] << " <path_to_incorrect_sentence_file> <path_to_correct_sentence_file> <path_to_output_file>" << std::endl;
+        return 1;
+    }
 
-    ErrorInfo error = word1.findMistakeVerb(word2);
+    QString wrongSentence;
+    QString correctSentence;
+    QString posTags;
+    InvalidInputError errors;
 
-    if (error.error == errorType::verbendES) {
-            std::cout << "Test 1 passed: verbendES" << std::endl;
-        } else {
-            std::cout << "Test 1 failed" << std::endl;
-        }
+    readFiles(argv[1], argv[2], wrongSentence, correctSentence, posTags, errors);
 
     return 0;
+
+//    // Инициализация тестовых данных
+//    Word word1;
+//    word1.wordText = "boxs";
+//    word1.postag = Noun;
+//    word1.id = 5;
+
+//    Word word2;
+//    word2.wordText = "boxes";
+//    word2.postag = Noun;
+//    word2.id = 5;
+
+//    ErrorInfo error = word1.findMistakeNoun(word2);
+
+//    if (error.error == errorType::nounEndES) {
+//            std::cout << "Test 1 passed: nounsIrregularPluralForm" << std::endl;
+//        } else {
+//            std::cout << "Test 1 failed" << std::endl;
+//        }
+
+//    return 0;
 }
