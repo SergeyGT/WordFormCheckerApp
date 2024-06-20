@@ -5,6 +5,7 @@
 #include <QTextStream>
 #include <fstream>
 #include "word.h"
+#include "test_sentence_compare.h"
 
 // Перечисление ошибок при обработке предложений
 enum class sentencesProcessingCodes {
@@ -51,7 +52,13 @@ PosTag stringToPosTag(const QString& posTagStr) {
         {"VERB", PosTag::Verb},
         {"ADJ", PosTag::Adj},
         {"NUM", PosTag::Num},
-        // Добавить остальные поз-теги
+        {"ARTICLE", PosTag::Article},
+        {"ADVERB", PosTag::Adverb},
+        {"PRONOUN", PosTag::Pronoun},
+        {"PREPOSITION", PosTag::Preposition},
+        {"CONJUCTION", PosTag::Conjunction},
+        {"INTERJECTION", PosTag::Interjection},
+        {"DETERMINER", PosTag::Determiner},
     };
 
     return posTagMap.value(posTagStr, PosTag::Noun); // или другой дефолтный PosTag
@@ -69,6 +76,19 @@ void writeErrorsToFile(const QList<ErrorInfo>& errors, const QString& fileName, 
 
     QTextStream out(&file);
 
+    // Подсчет количества ошибок, исключая zeroMistakes
+    int nonZeroMistakesCount = 0;
+    for (const ErrorInfo& error : errors) {
+        if (error.getErrorType() != errorType::zeroMistakes) {
+            nonZeroMistakesCount++;
+        }
+    }
+
+    if(nonZeroMistakesCount > 0)
+    {
+        QString numErrors = QString::number(nonZeroMistakesCount) + " mistake(s) found.\n";
+        out <<  numErrors;
+    }
     // Запись информации об ошибках
        for (const ErrorInfo& error : errors) {
            if (error.getErrorType() == errorType::zeroMistakes) {
@@ -82,83 +102,103 @@ void writeErrorsToFile(const QList<ErrorInfo>& errors, const QString& fileName, 
 
            switch (error.getErrorType()) {
                case errorType::wrongFormIrregularVerb:
-                   errorType = "Wrong Form irregular verb";
+                   errorType = "Wrong form irregular verb.";
                    break;
                case errorType::doubleConsonantEd:
-                   errorType = "Double consonant ed";
+                   errorType = "Double consonant ed.";
                    break;
                case errorType::delVerbE:
-                   errorType = "delete verb E";
+                   errorType = "Delete verb -e.";
                    break;
                case errorType::verbEndS:
-                   errorType = "verb end s";
+                   errorType = "Verb end -s.";
                    break;
                case errorType::verbEndEs:
-                   errorType = "verb end ES";
+                   errorType = "Verb end -Es.";
                    break;
                case errorType::nounsIrregularPluralForm:
                    errorType = "Irregular plural form";
                    break;
                case errorType::doubleConsonantIng:
-                   errorType = "double Consonant Ing Verb";
+                   errorType = "Double consonant -Ing verb.";
                    break;
                case errorType::doubleConsonantAdjEr:
-                   errorType = "double Consonant Adjective suffix -er";
+                   errorType = "Double Consonant Adjective suffix -er.";
                    break;
                case errorType::doubleConsonantAdjEst:
-                   errorType = "double Consonant Adjective suffix -est";
+                   errorType = "Double Consonant Adjective suffix -est.";
                    break;
                case errorType::incorrectFormCompAdj:
-                   errorType = "incorrect form comparative adjective";
+                   errorType = "Incorrect form comparative adjective.";
                    break;
                case errorType::incorrectFormSuperlatAdj:
-                   errorType = "incorrect form superlative adjective";
+                   errorType = "Incorrect form superlative adjective.";
                    break;
                case errorType::irregularNumForm:
-                   errorType = "irregular number form";
+                   errorType = "Irregular number form.";
                    break;
                case errorType::incorrectNumForm:
-                   errorType = "incorrect number form";
+                   errorType = "Incorrect number form.";
                    break;
                case errorType::nounEndS:
-                   errorType = "noun end -s";
+                   errorType = "Noun end -s.";
                    break;
                case errorType::nounEndES:
-                   errorType = "noun end -es";
+                   errorType = "Noun end -es.";
                    break;
                case errorType::nounsOnlyPluralForm:
-                   errorType = "noun in only plural noun";
+                   errorType = "Noun in only plural form.";
                    break;
                case errorType::mistakesInFormatPossessiveMultipleFormNoun:
                    errorType = "Format Possessive Multiple Form Noun";
                    break;
                case errorType::mistakesInFormatPossessiveFormNouns:
-                   errorType = "Format Possessive Form Nouns";
+                   errorType = "Format Possessive Form Nouns.";
                    break;
                case errorType::incorrectDegreesComparisonAdj:
-                   errorType = "incorrect degrees comparison in adjective";
+                   errorType = "Incorrect degrees comparison in adjective.";
                    break;
                case errorType::saveVerbE:
-                   errorType = "saving the ending -e";
+                   errorType = "Saving the ending -e verb.";
                    break;
                case errorType::UnnecessarErAdj:
-                   errorType = "Unnecessar suffix -er in adjective";
+                   errorType = "Unnecessar suffix -er in adjective.";
                    break;
                case errorType::UnnecessarEstAdj:
-                   errorType = "Unnecessar suffix -est in adjective";
+                   errorType = "Unnecessar suffix -est in adjective.";
                    break;
                default:
-                   errorType = "unknown Error";
+                   errorType = "unknown error";
                    break;
            }
 
            // Формируем текст ошибки
-           QString errorText = errorType + " " + wrongWord + " (word №" + QString::number(wordIndex + 1) + ") should be " + correctWord + "\n";
+           QString errorText = errorType + " Incorrectly used - " + wrongWord + " (word №" + QString::number(wordIndex + 1) + ") Correct form: " + correctWord + "\n";
 
            // Записываем текст ошибки в файл
            out << errorText;
 
        }
+
+    // Если никаких ошибок не было найдено - проверить файл на его содержимое
+    bool isFileEmpty = false;
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+       QTextStream in(&file);
+       // Если файл не пуст, то все останется без изменений
+       if (!in.readAll().isEmpty()) {
+           isFileEmpty = false;
+       }
+       // Если файл пуст, то поменять флажок на true - т.е. ошибок в предложении нет
+       else {isFileEmpty = true;}
+           file.close();
+    }
+
+    // Печать сообщения об отсутсвии ошибок в предложении
+    if (isFileEmpty) {
+        out << "Zero mistakes in sentence\n";
+        file.close();
+        return;
+    }
 
     file.close();
 }
@@ -264,82 +304,50 @@ void readFiles(const QString& filename1, const QString& filename2, QString& wron
     file2.close();
 }
 
+//int main(int argc, char *argv[]) {
+//    // QCoreApplication a(argc, argv);
 
+////    if (argc < 4) {
+////        std::cerr << "Usage: " << argv[0] << " <path_to_incorrect_sentence_file> <path_to_correct_sentence_file> <path_to_output_file>" << std::endl;
+////        return 1;
+////    }
 
+//    QString wrongSentence;
+//    QString correctSentence;
+//    QString posTags;
+//    InvalidInputError errors;
+//    SentenceDataError sentenceErrors;
 
-//int main(int argc, char *argv[])
-//{
-//    QCoreApplication a(argc, argv);
+//    //readFiles(argv[1], argv[2], wrongSentence, correctSentence, posTags, errors);
+//    readFiles("C:\\Users\\Acer\\WordFormCheckerApp\\incorrect.txt", "C:\\Users\\Acer\\WordFormCheckerApp\\correct.txt", wrongSentence, correctSentence, posTags, errors);
 
-//    char *bf;
+//    // Объекты для хранения предложений
+//    Sentence incorrectSentence;
+//    Sentence correctSentenceObject;
 
-//    if (wninit()) {
-//      fprintf(stderr, "morphy: Fatal error - cannot open WordNet database\n");
-//      exit(-1);
-//    }
+//    // Заполнение объектов Sentence данными из предложений
+//    writeToSentenceObjects(wrongSentence, correctSentence, posTags, incorrectSentence, correctSentenceObject, sentenceErrors);
 
-//    bf = morphstr("Better", ADJ);
-//// Если слово уже в начальной форме то будет ФЕЙЛ
-//    printf("%s\n", bf ? bf : "FAIL");
+//    //Поиск ошибок в предложениях
+//    QList<ErrorInfo> errorsList = correctSentenceObject.compare(incorrectSentence);
 
-////    return a.exec();
+//    // Запись ошибок в выходной файл
+//    // writeErrorsToFile(errorsList, argv[3], incorrectSentence, correctSentenceObject, errors);
+//    writeErrorsToFile(errorsList, "C:\\Users\\Acer\\WordFormCheckerApp\\output.txt", incorrectSentence, correctSentenceObject, errors);
+
+//    //return a.exec();
 //    return 0;
+
+////    return 0;
 //}
 
 
-
 int main(int argc, char *argv[]) {
-    // QCoreApplication a(argc, argv);
+    QCoreApplication app(argc, argv);
 
-//    if (argc < 4) {
-//        std::cerr << "Usage: " << argv[0] << " <path_to_incorrect_sentence_file> <path_to_correct_sentence_file> <path_to_output_file>" << std::endl;
-//        return 1;
-//    }
+    // Создаем экземпляр класса тестов
+    test_sentence_compare test;
 
-    QString wrongSentence;
-    QString correctSentence;
-    QString posTags;
-    InvalidInputError errors;
-    SentenceDataError sentenceErrors;
-
-    //readFiles(argv[1], argv[2], wrongSentence, correctSentence, posTags, errors);
-    readFiles("C:\\Users\\Acer\\WordFormCheckerApp\\incorrect.txt", "C:\\Users\\Acer\\WordFormCheckerApp\\correct.txt", wrongSentence, correctSentence, posTags, errors);
-
-    // Объекты для хранения предложений
-    Sentence incorrectSentence;
-    Sentence correctSentenceObject;
-
-    // Заполнение объектов Sentence данными из предложений
-    writeToSentenceObjects(wrongSentence, correctSentence, posTags, incorrectSentence, correctSentenceObject, sentenceErrors);
-
-    //Поиск ошибок в предложениях
-    QList<ErrorInfo> errorsList = correctSentenceObject.compare(incorrectSentence);
-
-
-    // Запись ошибок в выходной файл
-   // writeErrorsToFile(errorsList, argv[3], incorrectSentence, correctSentenceObject, errors);
-    writeErrorsToFile(errorsList, "C:\\Users\\Acer\\WordFormCheckerApp\\output.txt", incorrectSentence, correctSentenceObject, errors);
-
-    //return a.exec();
-    return 0;
-//    // Инициализация тестовых данных
-//    Word word1;
-//    word1.wordText = "boxs";
-//    word1.postag = Noun;
-//    word1.id = 5;
-
-//    Word word2;
-//    word2.wordText = "boxes";
-//    word2.postag = Noun;
-//    word2.id = 5;
-
-//    ErrorInfo error = word1.findMistakeNoun(word2);
-
-//    if (error.error == errorType::nounEndES) {
-//            std::cout << "Test 1 passed: nounsIrregularPluralForm" << std::endl;
-//        } else {
-//            std::cout << "Test 1 failed" << std::endl;
-//        }
-
-//    return 0;
+    // Запускаем тесты
+    return QTest::qExec(&test, argc, argv);
 }
