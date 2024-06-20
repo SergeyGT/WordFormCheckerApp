@@ -96,6 +96,9 @@ void writeErrorsToFile(const QList<ErrorInfo>& errors, const QString& fileName, 
                case errorType::verbEndEs:
                    errorType = "verb End ES";
                    break;
+               case errorType::nounsIrregularPluralForm:
+                   errorType = "Irregular plural form";
+                   break;
                default:
                    errorType = "unknown Error";
                    break;
@@ -238,11 +241,12 @@ void readFiles(const QString& filename1, const QString& filename2, QString& wron
 
 
 int main(int argc, char *argv[]) {
+    // QCoreApplication a(argc, argv);
 
-    if (argc < 4) {
-        std::cerr << "Usage: " << argv[0] << " <path_to_incorrect_sentence_file> <path_to_correct_sentence_file> <path_to_output_file>" << std::endl;
-        return 1;
-    }
+//    if (argc < 4) {
+//        std::cerr << "Usage: " << argv[0] << " <path_to_incorrect_sentence_file> <path_to_correct_sentence_file> <path_to_output_file>" << std::endl;
+//        return 1;
+//    }
 
     QString wrongSentence;
     QString correctSentence;
@@ -250,7 +254,8 @@ int main(int argc, char *argv[]) {
     InvalidInputError errors;
     SentenceDataError sentenceErrors;
 
-    readFiles(argv[1], argv[2], wrongSentence, correctSentence, posTags, errors);
+    //readFiles(argv[1], argv[2], wrongSentence, correctSentence, posTags, errors);
+    readFiles("C:\\Users\\Acer\\WordFormCheckerApp\\incorrect.txt", "C:\\Users\\Acer\\WordFormCheckerApp\\correct.txt", wrongSentence, correctSentence, posTags, errors);
 
     // Объекты для хранения предложений
     Sentence incorrectSentence;
@@ -264,10 +269,11 @@ int main(int argc, char *argv[]) {
 
 
     // Запись ошибок в выходной файл
-    writeErrorsToFile(errorsList, argv[3], incorrectSentence, correctSentenceObject, errors);
+   // writeErrorsToFile(errorsList, argv[3], incorrectSentence, correctSentenceObject, errors);
+    writeErrorsToFile(errorsList, "C:\\Users\\Acer\\WordFormCheckerApp\\output.txt", incorrectSentence, correctSentenceObject, errors);
 
+    //return a.exec();
     return 0;
-
 //    // Инициализация тестовых данных
 //    Word word1;
 //    word1.wordText = "boxs";

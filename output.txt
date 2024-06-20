@@ -1,0 +1,2 @@
+Irregular plural form mans (word #2) should be men
+Double consonant verb runing (word #4) should be running
