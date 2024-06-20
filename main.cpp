@@ -57,6 +57,61 @@ PosTag stringToPosTag(const QString& posTagStr) {
     return posTagMap.value(posTagStr, PosTag::Noun); // или другой дефолтный PosTag
 }
 
+void writeErrorsToFile(const QList<ErrorInfo>& errors, const QString& fileName, const Sentence& incorrect, const Sentence& correct, InvalidInputError& errorsObj) {
+    QFile file(fileName);
+
+    // Попытка открыть файл для записи
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        errorsObj.fileProcessingResult = fileProcessingCodes::cantCreateOutputFile;
+        errorsObj.printInputDataMessage();
+        return;
+    }
+
+    QTextStream out(&file);
+
+    // Запись информации об ошибках
+       for (const ErrorInfo& error : errors) {
+           if (error.getErrorType() == errorType::zeroMistakes) {
+               continue; // Пропускаем ошибки типа zeroMistakes
+           }
+
+           int wordIndex = error.getWordIndex();
+           QString wrongWord = incorrect.words[wordIndex].getWordText();
+           QString correctWord = correct.words[wordIndex].getWordText();
+           QString errorType = "";
+
+           switch (error.getErrorType()) {
+               case errorType::wrongFormIrregularVerb:
+                   errorType = "wrong Form Irregular Verb";
+                   break;
+               case errorType::doubleConsonantEd:
+                   errorType = "double Consonant ed";
+                   break;
+               case errorType::delVerbE:
+                   errorType = "delete Verb E";
+                   break;
+               case errorType::verbEndS:
+                   errorType = "verb End S";
+                   break;
+               case errorType::verbEndEs:
+                   errorType = "verb End ES";
+                   break;
+               default:
+                   errorType = "unknown Error";
+                   break;
+           }
+
+           // Формируем текст ошибки
+           QString errorText = errorType + " " + wrongWord + " (word #" + QString::number(wordIndex + 1) + ") should be " + correctWord + "\n";
+
+           // Записываем текст ошибки в файл
+           out << errorText;
+
+       }
+
+    file.close();
+}
+
 // Функция для заполнения объектов класса Sentence
 void writeToSentenceObjects(const QString& wrongSentence, const QString& correctSentence, const QString& posTags, Sentence& incorrect, Sentence& correct, SentenceDataError& errors) {
     // Разделение строк на слова и теги
@@ -193,8 +248,23 @@ int main(int argc, char *argv[]) {
     QString correctSentence;
     QString posTags;
     InvalidInputError errors;
+    SentenceDataError sentenceErrors;
 
     readFiles(argv[1], argv[2], wrongSentence, correctSentence, posTags, errors);
+
+    // Объекты для хранения предложений
+    Sentence incorrectSentence;
+    Sentence correctSentenceObject;
+
+    // Заполнение объектов Sentence данными из предложений
+    writeToSentenceObjects(wrongSentence, correctSentence, posTags, incorrectSentence, correctSentenceObject, sentenceErrors);
+
+    //Поиск ошибок в предложениях
+    QList<ErrorInfo> errorsList = correctSentenceObject.compare(incorrectSentence);
+
+
+    // Запись ошибок в выходной файл
+    writeErrorsToFile(errorsList, argv[3], incorrectSentence, correctSentenceObject, errors);
 
     return 0;
 
