@@ -23,7 +23,7 @@ void test_sentence_compare::testNoErrors()
     sentence2.words.append(Word{"is", 2, Verb});
     sentence2.words.append(Word{"sleeping", 3, Verb});
 
-    QList<ErrorInfo> errors = sentence1.compare(sentence2);
+    QList<ErrorInfo> errors = sentence2.compare(sentence1);
     for (int i = 0; i < sentence1.words.size(); ++i) {
         QCOMPARE(errors[i].error, zeroMistakes);
         QCOMPARE(errors[i].idxErroneousWord, i);
@@ -46,7 +46,7 @@ void test_sentence_compare::testSingleErrorInSentence() {
     sentence2.words.append(Word("is", 2, Verb));
     sentence2.words.append(Word("running", 3, Verb));
 
-    QList<ErrorInfo> errors = sentence1.compare(sentence2);
+    QList<ErrorInfo> errors = sentence2.compare(sentence1);
 
     QCOMPARE(errors[0].error, zeroMistakes);
     QCOMPARE(errors[0].idxErroneousWord, 0);
@@ -75,7 +75,7 @@ void test_sentence_compare::testMultipleErrorsInSentence() {
     sentence2.words.append(Word("runs", 2, Verb));
     sentence2.words.append(Word("fast", 3, Adj));
 
-    QList<ErrorInfo> errors = sentence1.compare(sentence2);
+    QList<ErrorInfo> errors = sentence2.compare(sentence1);
 
     QCOMPARE(errors[0].error, zeroMistakes);
     QCOMPARE(errors[0].idxErroneousWord, 0);
@@ -119,7 +119,7 @@ void test_sentence_compare::testErrorInEachPartOfSpeech() {
     sentence2.words.append(Word("very", 10, Adverb));
     sentence2.words.append(Word("fast", 11, Adj));
 
-    QList<ErrorInfo> errors = sentence1.compare(sentence2);
+    QList<ErrorInfo> errors = sentence2.compare(sentence1);
 
     QCOMPARE(errors[0].error, zeroMistakes);
     QCOMPARE(errors[0].idxErroneousWord, 0);
@@ -157,7 +157,7 @@ void test_sentence_compare::testErrorInEveryWord() {
     sentence2.words.append(Word("Dogs", 0, Noun));
     sentence2.words.append(Word("ran", 1, Verb));
 
-    QList<ErrorInfo> errors = sentence1.compare(sentence2);
+    QList<ErrorInfo> errors = sentence2.compare(sentence1);
 
     QCOMPARE(errors[0].error, nounEndS);
     QCOMPARE(errors[0].idxErroneousWord, 0);
@@ -181,7 +181,7 @@ void test_sentence_compare::testErrorInNoun() {
     sentence2.words.append(Word("are", 2, Verb));
     sentence2.words.append(Word("here", 3, Adverb));
 
-    QList<ErrorInfo> errors = sentence1.compare(sentence2);
+    QList<ErrorInfo> errors = sentence2.compare(sentence1);
 
     QCOMPARE(errors[0].error, zeroMistakes);
     QCOMPARE(errors[0].idxErroneousWord, 0);
@@ -196,7 +196,7 @@ void test_sentence_compare::testErrorInNoun() {
 // №7 Ошибка в прилагательном
 void test_sentence_compare::testErrorInAdjective() {
     Sentence sentence1;
-    sentence1.sentenceText = "The big cat is here";
+    sentence1.sentenceText = "The biger cat is here";
     sentence1.words.append(Word("The", 0, Article));
     sentence1.words.append(Word("big", 1, Adj));
     sentence1.words.append(Word("cat", 2, Noun));
@@ -211,11 +211,11 @@ void test_sentence_compare::testErrorInAdjective() {
     sentence2.words.append(Word("is", 3, Verb));
     sentence2.words.append(Word("here", 4, Adverb));
 
-    QList<ErrorInfo> errors = sentence1.compare(sentence2);
+    QList<ErrorInfo> errors = sentence2.compare(sentence1);
 
     QCOMPARE(errors[0].error, zeroMistakes);
     QCOMPARE(errors[0].idxErroneousWord, 0);
-    QCOMPARE(errors[1].error, incorrectDegreesComparisonAdj);
+    QCOMPARE(errors[1].error, doubleConsonantAdjEr);
     QCOMPARE(errors[1].idxErroneousWord, 1);
     QCOMPARE(errors[2].error, zeroMistakes);
     QCOMPARE(errors[2].idxErroneousWord, 2);
@@ -243,7 +243,7 @@ void test_sentence_compare::testErrorInNumeral() {
     sentence2.words.append(Word("is", 3, Verb));
     sentence2.words.append(Word("awarded", 4, Verb));
 
-    QList<ErrorInfo> errors = sentence1.compare(sentence2);
+    QList<ErrorInfo> errors = sentence2.compare(sentence1);
 
     QCOMPARE(errors[0].error, zeroMistakes);
     QCOMPARE(errors[0].idxErroneousWord, 0);
@@ -273,7 +273,7 @@ void test_sentence_compare::testComplexErrorNounVerb() {
     sentence2.words.append(Word("are", 2, Verb));
     sentence2.words.append(Word("running", 3, Verb));
 
-    QList<ErrorInfo> errors = sentence1.compare(sentence2);
+    QList<ErrorInfo> errors = sentence2.compare(sentence1);
 
     QCOMPARE(errors[0].error, zeroMistakes);
     QCOMPARE(errors[0].idxErroneousWord, 0);
@@ -288,22 +288,22 @@ void test_sentence_compare::testComplexErrorNounVerb() {
 // №10 Комплексный тест – ошибка в прилагательном и числительном
 void test_sentence_compare::testComplexErrorAdjectiveNumeral() {
     Sentence sentence1;
-    sentence1.sentenceText = "The twoth prize is bigger";
+    sentence1.sentenceText = "The twoth prize is gooder";
     sentence1.words.append(Word("The", 0, Article));
     sentence1.words.append(Word("twoth", 1, Num));
     sentence1.words.append(Word("prize", 2, Noun));
     sentence1.words.append(Word("is", 3, Verb));
-    sentence1.words.append(Word("bigger", 4, Adj));
+    sentence1.words.append(Word("gooder", 4, Adj));
 
     Sentence sentence2;
-    sentence2.sentenceText = "The second prize is big";
+    sentence2.sentenceText = "The second prize is better";
     sentence2.words.append(Word("The", 0, Article));
     sentence2.words.append(Word("second", 1, Num));
     sentence2.words.append(Word("prize", 2, Noun));
     sentence2.words.append(Word("is", 3, Verb));
-    sentence2.words.append(Word("big", 4, Adj));
+    sentence2.words.append(Word("better", 4, Adj));
 
-    QList<ErrorInfo> errors = sentence1.compare(sentence2);
+    QList<ErrorInfo> errors = sentence2.compare(sentence1);
 
     QCOMPARE(errors[0].error, zeroMistakes);
     QCOMPARE(errors[0].idxErroneousWord, 0);

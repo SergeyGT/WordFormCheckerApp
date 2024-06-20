@@ -6,6 +6,11 @@
 #include <fstream>
 #include "word.h"
 #include "test_sentence_compare.h"
+#include "test_word_findmistakenum.h"
+#include "test_word_comparewords.h"
+#include "test_word_findMistakeNoun.h"
+#include "test_word_findmistakeadj.h"
+#include "test_word_findmistakeverb.h"
 
 // Перечисление ошибок при обработке предложений
 enum class sentencesProcessingCodes {
@@ -166,6 +171,9 @@ void writeErrorsToFile(const QList<ErrorInfo>& errors, const QString& fileName, 
                    break;
                case errorType::UnnecessarEstAdj:
                    errorType = "Unnecessar suffix -est in adjective.";
+                   break;
+               case errorType::verbIng:
+                   errorType = "Miss -ing verb.";
                    break;
                default:
                    errorType = "unknown error";
@@ -345,9 +353,24 @@ void readFiles(const QString& filename1, const QString& filename2, QString& wron
 int main(int argc, char *argv[]) {
     QCoreApplication app(argc, argv);
 
+    int status = 0;
+
     // Создаем экземпляр класса тестов
-    test_sentence_compare test;
+    test_sentence_compare test_compare;
+    test_word_findMistakeNum test_num;
+    test_word_findMistakeAdj test_adj;
+    TestWordfindMistakeNoun test_noun;
+    Test_word_findMistakeVerb test_verb;
+    test_word_compareWords test_compare_words;
+
 
     // Запускаем тесты
-    return QTest::qExec(&test, argc, argv);
+    status |= QTest::qExec(&test_compare, argc, argv);
+    status |= QTest::qExec(&test_num, argc, argv);
+    status |= QTest::qExec(&test_adj, argc, argv);
+    status |= QTest::qExec(&test_noun, argc, argv);
+    status |= QTest::qExec(&test_verb, argc, argv);
+    status |= QTest::qExec(&test_compare_words, argc, argv);
+
+    return status;
 }

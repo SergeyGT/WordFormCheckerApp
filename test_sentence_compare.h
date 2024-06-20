@@ -2,6 +2,7 @@
 #define TEST_SENTENCE_COMPARE_H
 #include <QtTest/QtTest>
 #include <word.h>
+#include <QTest>
 
 class test_sentence_compare: public QObject
 {

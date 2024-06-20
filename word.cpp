@@ -47,6 +47,18 @@ ErrorInfo Word::compareWords(Word other) {
     // Реализация метода
     ErrorInfo errorInfo;
 
+    if ((this->postag != Noun && this->postag != Adj && this->postag != Num && this->postag != Verb) &&
+        (other.postag != Noun && other.postag != Adj && other.postag != Num && other.postag != Verb)) {
+        throw std::runtime_error("Both words are not a Noun, Adjective, Numeral, or Verb");
+    }
+    if (this->postag != Noun && this->postag != Adj && this->postag != Num && this->postag != Verb) {
+        throw std::runtime_error("Incorrect word is not a Noun, Adjective, Numeral, or Verb");
+    }
+
+    if (other.postag != Noun && other.postag != Adj && other.postag != Num && other.postag != Verb) {
+        throw std::runtime_error("Correct word is not a Noun, Adjective, Numeral, or Verb");
+    }
+
     // 1. Если слово существительное
     if (postag == PosTag::Noun) {
         errorInfo = findMistakeNoun(other);
@@ -67,15 +79,62 @@ ErrorInfo Word::compareWords(Word other) {
     return errorInfo;
 }
 
+QString trimApostrophe(const QString& word) {
+    int apostropheIndex = word.indexOf('`');
+    if (apostropheIndex != -1) {
+        return word.left(apostropheIndex);
+    }
+    return word;
+}
+
 ErrorInfo Word::findMistakeNoun(Word other) {
     // Реализация метода
     ErrorInfo errorInfo;
     errorInfo.idxErroneousWord = this->id;
 
+    // Исключения для существительных
+    if (this->postag != Noun && other.postag != Noun) {
+            throw std::runtime_error("Both words are not nouns");
+        }
+
+    if (this->postag != Noun && other.postag == Noun) {
+            throw std::runtime_error("The incorrect word is not a noun");
+        }
+
+    if (this->postag == Noun && other.postag != Noun) {
+            throw std::runtime_error("The correct word is not a noun");
+        }
+
     // 1. Проверка окончания на 's
     if (other.wordText.endsWith("`s") && !this->wordText.endsWith("`s")) {
         errorInfo.error = errorType::mistakesInFormatPossessiveFormNouns;
         return errorInfo;
+    }
+
+
+    if(this->wordText == other.wordText)
+    {
+        errorInfo.error = zeroMistakes;
+        return errorInfo;
+    }
+
+    // Проверка окончания в корне у притяжательного
+    if((other.wordText.endsWith("`") && this->wordText.endsWith("`")) || (other.wordText.endsWith("`s") && this->wordText.endsWith("`s")))
+    {
+        QString wordWithoutApos = trimApostrophe(other.wordText);
+        QString baseForm = base_form(wordWithoutApos, NOUN);
+
+        QString nounSApos = baseForm + "s";
+        if (wordWithoutApos.toLower() == nounSApos.toLower()) {
+            errorInfo.error = errorType::nounEndS;
+            return errorInfo;
+        }
+
+        QString nounESApos = baseForm + "es";
+        if (other.wordText.toLower() == nounESApos.toLower()) {
+            errorInfo.error = errorType::nounEndES;
+            return errorInfo;
+        }
     }
 
     // 2. Проверка окончания на '
@@ -100,16 +159,22 @@ ErrorInfo Word::findMistakeNoun(Word other) {
             return errorInfo;
         }
 
+        if(baseForm.endsWith("y") && other.wordText.endsWith("ies"))
+        {
+            errorInfo.error = errorType::nounEndES;
+            return errorInfo;
+        }
+
         // 3.4. Создание строки nounS
         QString nounS = baseForm + "s";
-        if (other.wordText == nounS) {
+        if (other.wordText.toLower() == nounS.toLower()) {
             errorInfo.error = errorType::nounEndS;
             return errorInfo;
         }
 
         // 3.6. Создание строки nounES
         QString nounES = baseForm + "es";
-        if (other.wordText == nounES) {
+        if (other.wordText.toLower() == nounES.toLower()) {
             errorInfo.error = errorType::nounEndES;
             return errorInfo;
         }
@@ -121,18 +186,35 @@ ErrorInfo Word::findMistakeVerb(Word other) {
     ErrorInfo errorInfo;
     errorInfo.idxErroneousWord = this->id;
 
+    // Исключения для Глаголов
+    if (this->postag != Verb && other.postag != Verb) {
+            throw std::runtime_error("Both words are not verbs");
+        }
+
+    if (this->postag != Verb && other.postag == Verb) {
+            throw std::runtime_error("The incorrect word is not a verb");
+        }
+
+    if (this->postag == Verb && other.postag != Verb) {
+            throw std::runtime_error("The correct word is not a verb");
+        }
+
+    if(this->wordText == other.wordText)
+    {
+        errorInfo.error = zeroMistakes;
+        return errorInfo;
+    }
+
     QString baseFormStr = base_form(other.wordText, VERB);
 
     // Проверка наличия слова в IrregularVerbs
     bool foundIrregular = std::find(IrregularVerbs.begin(), IrregularVerbs.end(), baseFormStr) != IrregularVerbs.end();
 
-    // Шаг 2.1
-    if (foundIrregular && !other.wordText.endsWith("ing")) {
+    if (foundIrregular && !other.wordText.endsWith("ing") && !other.wordText.endsWith("s") && !other.wordText.endsWith("es")) {
         errorInfo.error = errorType::wrongFormIrregularVerb;
         return errorInfo;
     }
 
-    // Шаг 3
     if (other.wordText.endsWith("ed")) {
         // Проверка на совпадение с удвоенной согласной
         if (this->wordText.compare(baseFormStr + "ed") == 0) {
@@ -142,30 +224,45 @@ ErrorInfo Word::findMistakeVerb(Word other) {
         // Иначе продолжить проверку
     }
 
-    // Шаг 4
     if (other.wordText.endsWith("ing")) {
-        // Проверка на совпадение с удвоенной согласной
-        if (this->wordText.compare(baseFormStr + "ing") == 0) {
-            errorInfo.error = errorType::doubleConsonantIng;
-            return errorInfo;
-        }
         // Проверка на окончание -e и замену на -ing
         if (baseFormStr.endsWith("e")) {
             errorInfo.error = errorType::delVerbE;
             return errorInfo;
         }
+        // Проверка на совпадение с удвоенной согласной
+        else if (this->wordText.toLower().compare(baseFormStr + "ing") == 0) {
+            errorInfo.error = errorType::doubleConsonantIng;
+            return errorInfo;
+        }
+        else if(other.wordText.toLower().compare(baseFormStr + "ing") == 0)
+        {
+            errorInfo.error = errorType::verbIng;
+            return errorInfo;
+        }
         // Завершить проверку
     }
 
-    // Шаг 5
+    // save e
+
+    if(baseFormStr.endsWith("e")){
+        if(other.wordText.toLower().compare(baseFormStr+"s") == 0) {
+            errorInfo.error = errorType::saveVerbE;
+            return errorInfo;
+        }
+    }
+
+
+
+
     QString verbS = baseFormStr + "s";
-    if (other.wordText == verbS) {
+    if (other.wordText.toLower() == verbS.toLower()) {
         errorInfo.error = errorType::verbEndS;
         return errorInfo;
     }
 
     QString verbES = baseFormStr + "es";
-    if (other.wordText == verbES) {
+    if (other.wordText.toLower() == verbES.toLower()) {
         errorInfo.error = errorType::verbEndEs;
         return errorInfo;
     }
@@ -177,6 +274,25 @@ ErrorInfo Word::findMistakeAdj(Word other) {
     // Реализация метода
     ErrorInfo errorInfo;
     errorInfo.idxErroneousWord = this->id;
+
+    // Исключения для прилагательных
+    if (this->postag != Adj && other.postag != Adj) {
+            throw std::runtime_error("Both words are not adjectives");
+        }
+
+    if (this->postag != Adj && other.postag == Adj) {
+            throw std::runtime_error("The incorrect word is not an adjective");
+        }
+
+    if (this->postag == Adj && other.postag != Adj) {
+            throw std::runtime_error("The correct word is not an adjective");
+        }
+
+    if(this->wordText == other.wordText)
+    {
+        errorInfo.error = zeroMistakes;
+        return errorInfo;
+    }
 
     // Получение начальной формы текущего слова
     QString baseForm = base_form(other.wordText, ADJ);
@@ -217,13 +333,29 @@ ErrorInfo Word::findMistakeAdj(Word other) {
         }
     }
 
+   // Употребление суффикосв er/est с прилагательными, где употреблять его так невозможно
+
+    if(!other.wordText.endsWith("er") && this->wordText.endsWith("er"))
+    {
+        errorInfo.error = errorType::UnnecessarErAdj;
+        return errorInfo;
+    }
+
+    else if(!other.wordText.endsWith("est") && this->wordText.endsWith("est"))
+    {
+        errorInfo.error = errorType::UnnecessarEstAdj;
+        return errorInfo;
+    }
+
     // 5. Проверка окончания на "er"
     if (other.wordText.endsWith("er")) {
         errorInfo.error = errorType::incorrectFormCompAdj;
+        return errorInfo;
     }
     // 6. Проверка окончания на "est"
     else if (other.wordText.endsWith("est")) {
         errorInfo.error = errorType::incorrectFormSuperlatAdj;
+        return errorInfo;
     }
 }
 
@@ -231,8 +363,27 @@ ErrorInfo Word::findMistakeNum(Word other) {
     ErrorInfo errorInfo;
     errorInfo.idxErroneousWord = this->id;
 
+    // Исключения для числительных
+    if (this->postag != Num && other.postag != Num) {
+            throw std::runtime_error("Both words are not numerals");
+        }
+
+    if (this->postag != Num && other.postag == Num) {
+            throw std::runtime_error("The incorrect word is not a numeral");
+        }
+
+    if (this->postag == Num && other.postag != Num) {
+            throw std::runtime_error("The correct word is not a numeral");
+        }
+
+    if(this->wordText == other.wordText)
+    {
+        errorInfo.error = zeroMistakes;
+        return errorInfo;
+    }
+
     // 1. Проверка на особые числительные: first, second, third
-    if (other.wordText == "first" || other.wordText == "second" || other.wordText == "third") {
+    if (other.wordText.toLower() == "first" || other.wordText.toLower() == "second" || other.wordText.toLower() == "third") {
         errorInfo.error = errorType::irregularNumForm;
         return errorInfo;
     }

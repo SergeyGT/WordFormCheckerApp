@@ -1,2 +1,2 @@
-The men are running
-ARTICLE NOUN VERB VERB
+first
+NUM

@@ -137,11 +137,17 @@ public:
 
     ErrorInfo findMistakeNum(Word other);
 
+    QString getWordText() const { return wordText; }
+    PosTag getPosTag() const { return postag; }
+    int getWordID() const { return id; }
+
 
     static std::vector<QString> OnlyPluralNouns;
     static std::vector<QString> IrregularNouns;
     static std::vector<QString> IrregularVerbs;
     static std::vector<QString> IrregularAdj;
+
+
 };
 
 /**
@@ -160,6 +166,9 @@ public:
         idxErroneousWord = 0;
         error = zeroMistakes;
     }
+
+    errorType getErrorType() const { return error; }
+    int getWordIndex() const { return idxErroneousWord; }
 };
 
 /**

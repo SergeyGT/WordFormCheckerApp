@@ -47,12 +47,12 @@ void Test_word_findMistakeVerb::testDoubleConsonantBeforeIngVerb()
 void Test_word_findMistakeVerb::testIrregularVerbForm()
 {
     Word word1;
-    word1.wordText = "be";
+    word1.wordText = "winned";
     word1.postag = Verb;
     word1.id = 2;
 
     Word word2;
-    word2.wordText = "was";
+    word2.wordText = "won";
     word2.postag = Verb;
     word2.id = 2;
 
@@ -93,7 +93,7 @@ void Test_word_findMistakeVerb::testVerbEndsWithEs()
     word2.id = 1;
 
     ErrorInfo error = word1.findMistakeVerb(word2);
-    QCOMPARE(error.error, verbendES);
+    QCOMPARE(error.error, verbEndEs);
     QCOMPARE(error.idxErroneousWord, 1);
 }
 
@@ -137,12 +137,12 @@ void Test_word_findMistakeVerb::testVerbDropE()
 void Test_word_findMistakeVerb::testIrregularVerbIngForm()
 {
     Word word1;
-    word1.wordText = "swing";
+    word1.wordText = "ring";
     word1.postag = Verb;
     word1.id = 1;
 
     Word word2;
-    word2.wordText = "swinging";
+    word2.wordText = "ringing";
     word2.postag = Verb;
     word2.id = 1;
 

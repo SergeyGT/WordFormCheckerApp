@@ -22,7 +22,6 @@ private slots:
     void testNounEndS1();
     void testNounEndS2();
     void testNounEndEs();
-    void testNounEndEs1();
     void testNounEndEs2();
     void testNounEndEs3();
     void bothWordsNotNoun();

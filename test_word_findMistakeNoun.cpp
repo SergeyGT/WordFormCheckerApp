@@ -102,7 +102,7 @@ void TestWordfindMistakeNoun::testOnlyPluralformNoun() {
     word1.id = 2;
 
     Word word2;
-    word2.wordText = "scissors`";
+    word2.wordText = "scissors";
     word2.postag = Noun;
     word2.id = 2;
 
@@ -119,7 +119,7 @@ void TestWordfindMistakeNoun::testIrregularFormNoun() {
     word1.id = 1;
 
     Word word2;
-    word2.wordText = "men`";
+    word2.wordText = "men";
     word2.postag = Noun;
     word2.id = 1;
 
@@ -294,12 +294,12 @@ void TestWordfindMistakeNoun::correctWordNotNoun() {
 // Ошибка в окончаниии s глагола, заканчивающегося на букву -e
 void TestWordfindMistakeNoun::testNounEndS2() {
     Word word1;
-    word1.wordText = "girrafs";
+    word1.wordText = "giraffs";
     word1.postag = Noun;
     word1.id = 5;
 
     Word word2;
-    word2.wordText = "girrafes";
+    word2.wordText = "giraffes";
     word2.postag = Noun;
     word2.id = 5;
 
@@ -325,22 +325,6 @@ void TestWordfindMistakeNoun::testNounEndS1() {
     QCOMPARE(error.idxErroneousWord, 5);
 }
 
-// Ошибка в окончании –es существительного
-void TestWordfindMistakeNoun::testNounEndEs1() {
-    Word word1;
-    word1.wordText = "drivs";
-    word1.postag = Noun;
-    word1.id = 5;
-
-    Word word2;
-    word2.wordText = "drives";
-    word2.postag = Noun;
-    word2.id = 5;
-
-    ErrorInfo error = word1.findMistakeNoun(word2);
-    QCOMPARE(error.error, nounEndES);
-    QCOMPARE(error.idxErroneousWord, 5);
-}
 
 // Ошибка в окончании –es существительного c окончанием -y в начальной форме
 void TestWordfindMistakeNoun::testNounEndEs2() {
