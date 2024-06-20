@@ -82,22 +82,70 @@ void writeErrorsToFile(const QList<ErrorInfo>& errors, const QString& fileName, 
 
            switch (error.getErrorType()) {
                case errorType::wrongFormIrregularVerb:
-                   errorType = "wrong Form Irregular Verb";
+                   errorType = "Wrong Form irregular verb";
                    break;
                case errorType::doubleConsonantEd:
-                   errorType = "double Consonant ed";
+                   errorType = "Double consonant ed";
                    break;
                case errorType::delVerbE:
-                   errorType = "delete Verb E";
+                   errorType = "delete verb E";
                    break;
                case errorType::verbEndS:
-                   errorType = "verb End S";
+                   errorType = "verb end s";
                    break;
                case errorType::verbEndEs:
-                   errorType = "verb End ES";
+                   errorType = "verb end ES";
                    break;
                case errorType::nounsIrregularPluralForm:
                    errorType = "Irregular plural form";
+                   break;
+               case errorType::doubleConsonantIng:
+                   errorType = "double Consonant Ing Verb";
+                   break;
+               case errorType::doubleConsonantAdjEr:
+                   errorType = "double Consonant Adjective suffix -er";
+                   break;
+               case errorType::doubleConsonantAdjEst:
+                   errorType = "double Consonant Adjective suffix -est";
+                   break;
+               case errorType::incorrectFormCompAdj:
+                   errorType = "incorrect form comparative adjective";
+                   break;
+               case errorType::incorrectFormSuperlatAdj:
+                   errorType = "incorrect form superlative adjective";
+                   break;
+               case errorType::irregularNumForm:
+                   errorType = "irregular number form";
+                   break;
+               case errorType::incorrectNumForm:
+                   errorType = "incorrect number form";
+                   break;
+               case errorType::nounEndS:
+                   errorType = "noun end -s";
+                   break;
+               case errorType::nounEndES:
+                   errorType = "noun end -es";
+                   break;
+               case errorType::nounsOnlyPluralForm:
+                   errorType = "noun in only plural noun";
+                   break;
+               case errorType::mistakesInFormatPossessiveMultipleFormNoun:
+                   errorType = "Format Possessive Multiple Form Noun";
+                   break;
+               case errorType::mistakesInFormatPossessiveFormNouns:
+                   errorType = "Format Possessive Form Nouns";
+                   break;
+               case errorType::incorrectDegreesComparisonAdj:
+                   errorType = "incorrect degrees comparison in adjective";
+                   break;
+               case errorType::saveVerbE:
+                   errorType = "saving the ending -e";
+                   break;
+               case errorType::UnnecessarErAdj:
+                   errorType = "Unnecessar suffix -er in adjective";
+                   break;
+               case errorType::UnnecessarEstAdj:
+                   errorType = "Unnecessar suffix -est in adjective";
                    break;
                default:
                    errorType = "unknown Error";
@@ -105,7 +153,7 @@ void writeErrorsToFile(const QList<ErrorInfo>& errors, const QString& fileName, 
            }
 
            // Формируем текст ошибки
-           QString errorText = errorType + " " + wrongWord + " (word #" + QString::number(wordIndex + 1) + ") should be " + correctWord + "\n";
+           QString errorText = errorType + " " + wrongWord + " (word №" + QString::number(wordIndex + 1) + ") should be " + correctWord + "\n";
 
            // Записываем текст ошибки в файл
            out << errorText;
