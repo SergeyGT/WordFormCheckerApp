@@ -17,17 +17,17 @@ class Word;
 */
 enum PosTag
 {
-    Noun,
-    Verb,
-    Adj,
-    Adverb,
-    Num,
-    Pronoun,
-    Preposition,
-    Conjunction,
-    Interjection,
-    Article,
-    Determiner
+    Noun, ///< Существительное.
+    Verb, ///< Глагол.
+    Adj, ///< Прилагательное.
+    Adverb, ///< Наречие.
+    Num, ///< Числительное.
+    Pronoun, ///< Местоимение.
+    Preposition, ///< Предлог.
+    Conjunction, ///< Союз.
+    Interjection, ///< Междометие.
+    Article, ///< Артикль.
+    Determiner ///< Разделитель.
 };
 
 /**
@@ -36,17 +36,17 @@ enum PosTag
  * Это перечисление содержит различные типы ошибок, которые могут возникнуть.
 */
 enum errorType {
-    doubleConsonantEd, /**< Двойная согласная в глаголе*/
-    doubleConsonantIng,
-    doubleConsonantAdjEr, /**< Двойная согласная в прилагательном */
-    doubleConsonantAdjEst,
-    UnnecessarErAdj,
-    UnnecessarEstAdj,
+    doubleConsonantEd, /**< Двойная согласная в глаголе с окончанием ed*/
+    doubleConsonantIng, /**< Двойная согласная в глаголе с окончанием ing*/
+    doubleConsonantAdjEr, /**< Двойная согласная в прилагательном -er */
+    doubleConsonantAdjEst, /**< Двойная согласная в прилагательном -est */
+    UnnecessarErAdj, /**< Прилагательного с суффиксом -er не существует*/
+    UnnecessarEstAdj, /**< Прилагательного с суффиксом -est не существует*/
     delVerbE, /**< Удаление 'e' в глаголе */
     verbEndS, /**< Окончание глагола на 's' */
-    verbEndEs,
-    verbIng,
-    saveVerbE,
+    verbEndEs, /**< Окончание глагола на 'es' */
+    verbIng, /**< Окончание глагола на 'ing' */
+    saveVerbE, /**< Сохранение окончания -e глагола*/
     verbendES, /**< Окончание глагола на 'es' */
     nounEndS, /**< Окончание существительного на 's' */
     nounEndES, /**< Окончание существительного на 'es' */
@@ -59,8 +59,8 @@ enum errorType {
     incorrectFormSuperlatAdj, /**< Неправильная форма превосходной степени прилагательного */
     mistakesInFormatPossessiveFormNouns, /**< Ошибки в формате притяжательной формы существительных */
     mistakesInFormatPossessiveMultipleFormNoun,
-    irregularNumForm,
-    incorrectNumForm,
+    irregularNumForm, /**< Использование числительного-исключения */
+    incorrectNumForm, /**< Использование числительного с образованием неверной формы*/
     unknownError, /**< Неизвестная ошибка */
     zeroMistakes /**< Нет ошибок */
 };
@@ -82,11 +82,6 @@ public:
     int id; /**< уникальный идентификатор(номер) слова */
     PosTag postag; /**< Часть речи слова */
 public:
-//    Word() {
-//        wordText = "";
-//        postag = Noun;
-//        id = 0;
-//    }
 
     Word() = default;
     Word(const QString &text, int idx, PosTag tag)
@@ -135,17 +130,20 @@ public:
      */
     ErrorInfo findMistakeAdj(Word other);
 
+    /**
+     * @brief Определение типа ошибки в числительных.
+     *
+     * Определяет тип ошибки в данном числительном.
+     * @param other Другое числительное для сравнения.
+     * @return Информация об ошибке.
+     */
     ErrorInfo findMistakeNum(Word other);
 
-    QString getWordText() const { return wordText; }
-    PosTag getPosTag() const { return postag; }
-    int getWordID() const { return id; }
 
-
-    static std::vector<QString> OnlyPluralNouns;
-    static std::vector<QString> IrregularNouns;
-    static std::vector<QString> IrregularVerbs;
-    static std::vector<QString> IrregularAdj;
+    static std::vector<QString> OnlyPluralNouns; ///< Статический вектор для хранения существительных только во мн.ч..
+    static std::vector<QString> IrregularNouns; ///< Статический вектор для хранения неправильных существительных.
+    static std::vector<QString> IrregularVerbs; ///< Статический вектор для хранения неправильных глаголов.
+    static std::vector<QString> IrregularAdj; ///< Статический вектор для хранения неправильных прилагательных.
 
 
 };
@@ -158,8 +156,8 @@ public:
 class ErrorInfo
 {
 public:
-    int idxErroneousWord;
-    errorType error;
+    int idxErroneousWord; /**< Индекс слова */
+    errorType error; /**< Тип ошибки слова */
 
     ErrorInfo()
     {
@@ -167,8 +165,6 @@ public:
         error = zeroMistakes;
     }
 
-    errorType getErrorType() const { return error; }
-    int getWordIndex() const { return idxErroneousWord; }
 };
 
 /**

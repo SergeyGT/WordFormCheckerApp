@@ -1,2 +1,2 @@
-first
-NUM
+Men plays, football.
+NOUN VERB NOUN

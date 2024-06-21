@@ -44,7 +44,7 @@ QString base_form(const QString& word, int pos) {
 // Реализация методов класса Word
 
 ErrorInfo Word::compareWords(Word other) {
-    // Реализация метода
+
     ErrorInfo errorInfo;
 
     if ((this->postag != Noun && this->postag != Adj && this->postag != Num && this->postag != Verb) &&
@@ -88,7 +88,7 @@ QString trimApostrophe(const QString& word) {
 }
 
 ErrorInfo Word::findMistakeNoun(Word other) {
-    // Реализация метода
+
     ErrorInfo errorInfo;
     errorInfo.idxErroneousWord = this->id;
 
@@ -182,7 +182,7 @@ ErrorInfo Word::findMistakeNoun(Word other) {
 }
 
 ErrorInfo Word::findMistakeVerb(Word other) {
-    // Реализация метода
+
     ErrorInfo errorInfo;
     errorInfo.idxErroneousWord = this->id;
 
@@ -271,39 +271,41 @@ ErrorInfo Word::findMistakeVerb(Word other) {
 }
 
 ErrorInfo Word::findMistakeAdj(Word other) {
-    // Реализация метода
+
     ErrorInfo errorInfo;
     errorInfo.idxErroneousWord = this->id;
 
-    // Исключения для прилагательных
+    ///< Исключения для прилагательных
+    /// Если Обе части речи не прилагательные
     if (this->postag != Adj && other.postag != Adj) {
             throw std::runtime_error("Both words are not adjectives");
         }
-
+    ///< Если возможное некорректное слово не прилагательное
     if (this->postag != Adj && other.postag == Adj) {
             throw std::runtime_error("The incorrect word is not an adjective");
         }
-
+    ///< Если корректное слово не прилагательное
     if (this->postag == Adj && other.postag != Adj) {
             throw std::runtime_error("The correct word is not an adjective");
         }
 
+    ///< Если слова одинаковые
     if(this->wordText == other.wordText)
     {
         errorInfo.error = zeroMistakes;
         return errorInfo;
     }
 
-    // Получение начальной формы текущего слова
+    ///< Получение начальной формы текущего слова
     QString baseForm = base_form(other.wordText, ADJ);
 
-    // 2. Проверка наличия слова в списке IrregularAdj
+    ///< 2. Проверка наличия слова в списке IrregularAdj
     if (std::find(IrregularAdj.begin(), IrregularAdj.end(), baseForm) != IrregularAdj.end()) {
         errorInfo.error = errorType::incorrectDegreesComparisonAdj;
         return errorInfo;
     }
 
-    // 3. Проверка окончаний
+    ///< 3. Проверка на замену гласной буквы -y в начальной форме на er/est
     if (baseForm.endsWith("y")) {
         if (other.wordText.endsWith("er")) {
             errorInfo.error = errorType::incorrectFormCompAdj;
@@ -313,7 +315,7 @@ ErrorInfo Word::findMistakeAdj(Word other) {
         return errorInfo;
     }
 
-    // 4. Проверка наличия одной гласной буквы
+    ///< 4. Подсчет гласных букв в начальной форме прилагательного
     QString vowels = "aeiouAEIOU";
     int vowelCount = 0;
     for (QChar ch : baseForm) {
@@ -322,6 +324,7 @@ ErrorInfo Word::findMistakeAdj(Word other) {
         }
     }
 
+    ///< Проверка прилагательного на наличие удвоенной согласной, при том условии, что в начальной форме у него 1 гласная буква
     if (vowelCount == 1) {
         if (other.wordText.endsWith("er")) {
             errorInfo.error = errorType::doubleConsonantAdjEr;
@@ -333,26 +336,24 @@ ErrorInfo Word::findMistakeAdj(Word other) {
         }
     }
 
-   // Употребление суффикосв er/est с прилагательными, где употреблять его так невозможно
-
+    ///< Употребление суффикосв er/est с прилагательными, где употреблять его так невозможно
     if(!other.wordText.endsWith("er") && this->wordText.endsWith("er"))
     {
         errorInfo.error = errorType::UnnecessarErAdj;
         return errorInfo;
     }
-
     else if(!other.wordText.endsWith("est") && this->wordText.endsWith("est"))
     {
         errorInfo.error = errorType::UnnecessarEstAdj;
         return errorInfo;
     }
 
-    // 5. Проверка окончания на "er"
+    ///< 5. Проверка окончания на "er"
     if (other.wordText.endsWith("er")) {
         errorInfo.error = errorType::incorrectFormCompAdj;
         return errorInfo;
     }
-    // 6. Проверка окончания на "est"
+    ///< 6. Проверка окончания на "est"
     else if (other.wordText.endsWith("est")) {
         errorInfo.error = errorType::incorrectFormSuperlatAdj;
         return errorInfo;
@@ -363,32 +364,34 @@ ErrorInfo Word::findMistakeNum(Word other) {
     ErrorInfo errorInfo;
     errorInfo.idxErroneousWord = this->id;
 
-    // Исключения для числительных
+    ///< Исключения для числительных
+    /// Если Обе части речи не числительные
     if (this->postag != Num && other.postag != Num) {
             throw std::runtime_error("Both words are not numerals");
         }
-
+    ///< Если возможное некорректное слово не числительное
     if (this->postag != Num && other.postag == Num) {
             throw std::runtime_error("The incorrect word is not a numeral");
         }
-
+    ///< Если корректное слово не числительное
     if (this->postag == Num && other.postag != Num) {
             throw std::runtime_error("The correct word is not a numeral");
         }
 
+    ///< Если слова одинаковые
     if(this->wordText == other.wordText)
     {
         errorInfo.error = zeroMistakes;
         return errorInfo;
     }
 
-    // 1. Проверка на особые числительные: first, second, third
+    ///< 1. Проверка на особые числительные: first, second, third
     if (other.wordText.toLower() == "first" || other.wordText.toLower() == "second" || other.wordText.toLower() == "third") {
         errorInfo.error = errorType::irregularNumForm;
         return errorInfo;
     }
 
-    // 2. Проверка окончания на -th
+    ///< 2. Проверка окончания на -th
     if (other.wordText.endsWith("th")) {
         errorInfo.error = errorType::incorrectNumForm;
         return errorInfo;
@@ -397,18 +400,18 @@ ErrorInfo Word::findMistakeNum(Word other) {
 
 QList<ErrorInfo> Sentence::compare(Sentence other) {
     QList<ErrorInfo> errors;
-    // Проход по словам предложений
+    ///< Проход по словам предложений
     for (int i = 0; i < words.size(); ++i) {
         Word correctWord = words[i];
         Word incorrectWord = other.words[i];
 
-        // 1.1. Сравнение текущего слова
+        ///< 1.1. Сравнение текущего слова
         if (correctWord.wordText != incorrectWord.wordText) {
-            // 1.2. Вызов функции compareWords, если слова не совпадают
+            ///< 1.2. Вызов функции compareWords, если слова не совпадают
             ErrorInfo error = incorrectWord.compareWords(correctWord);
             errors.append(error);
         } else {
-            // 1.3. Присвоение типа ошибки - zeroMistakes, если слова совпадают
+            ///< 1.3. Присвоение типа ошибки - zeroMistakes, если слова совпадают
             ErrorInfo error;
             error.idxErroneousWord = incorrectWord.id;
             error.error = errorType::zeroMistakes;
