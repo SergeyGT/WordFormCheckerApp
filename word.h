@@ -58,7 +58,7 @@ enum errorType {
     incorrectFormCompAdj, /**< Неправильная форма сравнительной степени прилагательного */
     incorrectFormSuperlatAdj, /**< Неправильная форма превосходной степени прилагательного */
     mistakesInFormatPossessiveFormNouns, /**< Ошибки в формате притяжательной формы существительных */
-    mistakesInFormatPossessiveMultipleFormNoun,
+    mistakesInFormatPossessiveMultipleFormNoun, /**< Ошибки во мн.ч. притяжательной формы существительных */
     irregularNumForm, /**< Использование числительного-исключения */
     incorrectNumForm, /**< Использование числительного с образованием неверной формы*/
     unknownError, /**< Неизвестная ошибка */
@@ -145,6 +145,10 @@ public:
     static std::vector<QString> IrregularVerbs; ///< Статический вектор для хранения неправильных глаголов.
     static std::vector<QString> IrregularAdj; ///< Статический вектор для хранения неправильных прилагательных.
 
+    QString getWordText() const { return wordText; }
+    PosTag getPosTag() const { return postag; }
+    int getWordID() const { return id; }
+
 
 };
 
@@ -165,6 +169,8 @@ public:
         error = zeroMistakes;
     }
 
+    errorType getErrorType() const { return error; }
+    int getWordIndex() const { return idxErroneousWord; }
 };
 
 /**

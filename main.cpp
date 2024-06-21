@@ -18,10 +18,10 @@
  * @brief Перечисление ошибок при обработке предложений
  */
 enum class sentencesProcessingCodes {
-    sentencesProcessed,     ///< Предложения обработаны успешно.
-    fewerWordsThanTags,     ///< Ошибка: меньше слов, чем POS-тегов.
-    fewerTagsThanWords,     ///< Ошибка: меньше POS-тегов, чем слов.
-    wrongPosTag             ///< Ошибка: встречен неправильный POS-тег.
+    sentencesProcessed,     /**< Предложения обработаны успешно.*/
+    fewerWordsThanTags,     /**< Ошибка: меньше слов, чем POS-тегов.*/
+    fewerTagsThanWords,     /**< Ошибка: меньше POS-тегов, чем слов.*/
+    wrongPosTag             /**< Ошибка: встречен неправильный POS-тег.*/
 };
 
 /**
@@ -29,8 +29,8 @@ enum class sentencesProcessingCodes {
  */
 class SentenceDataError {
 public:
-    sentencesProcessingCodes sentenceProcessingResult; ///< Результат обработки предложения.
-    int countWords = 0; ///< Количество слов в предложении.
+    sentencesProcessingCodes sentenceProcessingResult; /**< Результат обработки предложения.*/
+    int countWords = 0; /**< Количество слов в предложении.*/
 
     /**
      * @brief Выводит сообщение об ошибке данных предложения в стандартный вывод.
@@ -60,15 +60,15 @@ public:
  * @brief Перечисление кодов обработки файлов.
  */
 enum class fileProcessingCodes {
-    filesProcessed,                     ///< Файлы обработаны успешно.
-    inputCorrectFileNotExist,           ///< Ошибка: отсутствует входной корректный файл.
-    inputIncorrectFileNotExist,         ///< Ошибка: отсутствует входной некорректный файл.
-    cantCreateOutputFile,               ///< Ошибка: невозможно создать выходной файл.
-    wrongStrCountInCorrectFile,         ///< Ошибка: неправильное количество строк в корректном файле.
-    wrongStrCountInVerifiedFile,        ///< Ошибка: неправильное количество строк в проверенном файле.
-    correctFileIsEmpty,                 ///< Ошибка: корректный файл пуст.
-    invalidFileIsEmpty,                 ///< Ошибка: некорректный файл пуст.
-    posTagsAreEmpty                     ///< Ошибка: POS-теги отсутствуют.
+    filesProcessed,                     /**< Файлы обработаны успешно.*/
+    inputCorrectFileNotExist,           /**< Ошибка: отсутствует входной корректный файл.*/
+    inputIncorrectFileNotExist,         /**< Ошибка: отсутствует входной некорректный файл.*/
+    cantCreateOutputFile,               /**< Ошибка: невозможно создать выходной файл.*/
+    wrongStrCountInCorrectFile,         /**< Ошибка: неправильное количество строк в корректном файле.*/
+    wrongStrCountInVerifiedFile,        /**< Ошибка: неправильное количество строк в проверенном файле.*/
+    correctFileIsEmpty,                 /**< Ошибка: корректный файл пуст.*/
+    invalidFileIsEmpty,                 /**< Ошибка: некорректный файл пуст.*/
+    posTagsAreEmpty                     /**< Ошибка: POS-теги отсутствуют.*/
 };
 
 /**
@@ -76,9 +76,9 @@ enum class fileProcessingCodes {
  */
 class InvalidInputError {
 public:
-    fileProcessingCodes fileProcessingResult;    ///< Результат обработки файла.
-    int countOfWordsInFile = 0;                  ///< Количество слов в файле.
-    int countOfPosTagsInFile = 0;                ///< Количество POS-тегов в файле.
+    fileProcessingCodes fileProcessingResult;    /**< Результат обработки файла.*/
+    int countOfWordsInFile = 0;                  /**< Количество слов в файле.*/
+    int countOfPosTagsInFile = 0;                /**< Количество POS-тегов в файле.*/
 
     /**
      * @brief Выводит сообщение об ошибке неверного ввода в стандартный вывод.
@@ -138,7 +138,7 @@ PosTag stringToPosTag(const QString& posTagStr) {
         {"DETERMINER", PosTag::Determiner},
     };
 
-    return posTagMap.value(posTagStr, PosTag::Noun); ///< Дефолтный pos-тег
+    return posTagMap.value(posTagStr, PosTag::Noun); /**< Дефолтный pos-тег*/
 }
 
 /**
@@ -156,7 +156,7 @@ PosTag stringToPosTag(const QString& posTagStr) {
 void writeErrorsToFile(const QList<ErrorInfo>& errors, const QString& fileName, const Sentence& incorrect, const Sentence& correct, InvalidInputError& errorsObj) {
     QFile file(fileName);
 
-    ///< Попытка открыть выходной файл для записи
+    /**< Попытка открыть выходной файл для записи*/
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         errorsObj.fileProcessingResult = fileProcessingCodes::cantCreateOutputFile;
         errorsObj.printInputDataMessage();
@@ -165,7 +165,7 @@ void writeErrorsToFile(const QList<ErrorInfo>& errors, const QString& fileName, 
 
     QTextStream out(&file);
 
-    ///< Подсчет количества ошибок, исключая zeroMistakes
+    /**< Подсчет количества ошибок, исключая zeroMistakes*/
     int nonZeroMistakesCount = 0;
     for (const ErrorInfo& error : errors) {
         if (error.getErrorType() != errorType::zeroMistakes) {
@@ -173,21 +173,21 @@ void writeErrorsToFile(const QList<ErrorInfo>& errors, const QString& fileName, 
         }
     }
 
-    ///< Печать сообщения об отсутсвии ошибок в предложении, если ошибок 0
+    /**< Печать сообщения об отсутсвии ошибок в предложении, если ошибок 0*/
     if (nonZeroMistakesCount == 0) {
         out << "Zero mistakes in sentence.\n";
         file.close();
         return;
     }
 
-    ///< Если ошибки есть - выести сообщение с кол-вом ошибок
+    /**< Если ошибки есть - выести сообщение с кол-вом ошибок*/
     if(nonZeroMistakesCount > 0)
     {
         QString numErrors = QString::number(nonZeroMistakesCount) + " mistake(s) found.\n";
         out <<  numErrors;
     }
 
-    ///< Запись информации об ошибках
+    /**< Запись информации об ошибках*/
        for (const ErrorInfo& error : errors) {
            if (error.getErrorType() == errorType::zeroMistakes) {
                continue; // Пропускаем ошибки типа zeroMistakes
@@ -273,18 +273,18 @@ void writeErrorsToFile(const QList<ErrorInfo>& errors, const QString& fileName, 
                    break;
            }
 
-           ///< Формируем текст ошибки - на основании определенного типа ошибки
+           /**< Формируем текст ошибки - на основании определенного типа ошибки*/
            QString errorText = errorType + " Incorrectly used - " + wrongWord + " (word №" + QString::number(wordIndex + 1) + ") Correct form: " + correctWord + "\n";
 
-           ///< Записываем текст ошибки в файл
+           /**< Записываем текст ошибки в файл*/
            out << errorText;
 
        }
 
-    ///< Будем считать, что файлы записаны без ошибок
+    /**< Будем считать, что файлы записаны без ошибок*/
     errorsObj.fileProcessingResult = fileProcessingCodes::filesProcessed;
 
-    ///< Закрываем выходной файл
+    /**< Закрываем выходной файл*/
     file.close();
 }
 
@@ -304,32 +304,32 @@ void writeErrorsToFile(const QList<ErrorInfo>& errors, const QString& fileName, 
  */
 void writeToSentenceObjects(const QString& wrongSentence, const QString& correctSentence, const QString& posTags, Sentence& incorrect, Sentence& correct, SentenceDataError& errors) {
 
-    ///< Регулярное выражение для разбиение строки на слова
+    /**< Регулярное выражение для разбиение строки на слова*/
     QRegularExpression regex("[\\s,\\.]+");
 
-    ///< Разделение строк на слова и теги
+    /**< Разделение строк на слова и теги*/
     QStringList wrongWords = wrongSentence.split(regex, QString::SkipEmptyParts);
     QStringList correctWords = correctSentence.split(regex, QString::SkipEmptyParts);
     QStringList posTagList = posTags.split(" ", QString::SkipEmptyParts);
 
-    ///< Проверка на наличие ошибок в количестве слов и тегов
+    /**< Проверка на наличие ошибок в количестве слов и тегов*/
     if (posTagList.size() != correctWords.size() || posTagList.size() != wrongWords.size()) {
-        ///< Если тегов меньше чем слов
+        /**< Если тегов меньше чем слов*/
         if (posTagList.size() < wrongWords.size()) {
             errors.sentenceProcessingResult = sentencesProcessingCodes::fewerTagsThanWords;
         }
-        ///< Если слов меньше чем тегов
+        /**< Если слов меньше чем тегов*/
         else if (posTagList.size() > wrongWords.size()) {
             errors.sentenceProcessingResult = sentencesProcessingCodes::fewerWordsThanTags;
         } else {
             errors.sentenceProcessingResult = sentencesProcessingCodes::wrongPosTag;
         }
-        ///< Сообщение об ошибке
+        /**< Сообщение об ошибке*/
         errors.printSentenceDataMessage();
         return;
     }
 
-    ///< Заполнение объектов Sentence - некорректного слова
+    /**< Заполнение объектов Sentence - некорректного слова*/
     for (int i = 0; i < wrongWords.size(); ++i) {
         Word wrongWord;
         wrongWord.wordText = wrongWords[i];
@@ -338,7 +338,7 @@ void writeToSentenceObjects(const QString& wrongSentence, const QString& correct
         incorrect.words.append(wrongWord);
     }
 
-    ///< Заполнение объектов Sentence - корректного слова
+    /**< Заполнение объектов Sentence - корректного слова*/
     for (int i = 0; i < correctWords.size(); ++i) {
         Word correctWord;
         correctWord.wordText = correctWords[i];
@@ -347,11 +347,11 @@ void writeToSentenceObjects(const QString& wrongSentence, const QString& correct
         correct.words.append(correctWord);
     }
 
-    ///< Сохранение текстов предложений
+    /**< Сохранение текстов предложений*/
     incorrect.sentenceText = wrongSentence;
     correct.sentenceText = correctSentence;
 
-    ///< Установка успешного результата обработки
+    /**< Установка успешного результата обработки*/
     errors.sentenceProcessingResult = sentencesProcessingCodes::sentencesProcessed;
 }
 
@@ -369,7 +369,7 @@ void writeToSentenceObjects(const QString& wrongSentence, const QString& correct
  * @param errors Объект класса InvalidInputError для хранения информации об ошибках при чтении файлов.
  */
 void readFiles(const QString& filename1, const QString& filename2, QString& wrongSentence, QString& correctSentence, QString& posTags, InvalidInputError& errors) {
-    ///< Открыть некорректный файл по имени, полученному в качестве входного параметра
+    /**< Открыть некорректный файл по имени, полученному в качестве входного параметра*/
     QFile file1(filename1);
     if (!file1.open(QIODevice::ReadOnly | QIODevice::Text)) {
         errors.fileProcessingResult = fileProcessingCodes::inputIncorrectFileNotExist;
@@ -377,7 +377,7 @@ void readFiles(const QString& filename1, const QString& filename2, QString& wron
         return;
     }
 
-    ///< Прочитать первую строку из некорректного файла
+    /**< Прочитать первую строку из некорректного файла*/
     QTextStream in1(&file1);
     if (in1.atEnd()) {
         errors.fileProcessingResult = fileProcessingCodes::invalidFileIsEmpty;
@@ -386,10 +386,10 @@ void readFiles(const QString& filename1, const QString& filename2, QString& wron
         return;
     }
 
-    ///< Сохранение некорректного предложения
+    /**< Сохранение некорректного предложения*/
     wrongSentence = in1.readLine();
 
-    ///< Проверка на наличие второй строки (которая не должна быть)
+    /**< Проверка на наличие второй строки (которая не должна быть)*/
     if (!in1.atEnd()) {
         errors.fileProcessingResult = fileProcessingCodes::wrongStrCountInCorrectFile;
         errors.printInputDataMessage();
@@ -397,7 +397,7 @@ void readFiles(const QString& filename1, const QString& filename2, QString& wron
         return;
     }
 
-    ///< Открыть корректный файл по имени, полученному в качестве входного параметра
+    /**< Открыть корректный файл по имени, полученному в качестве входного параметра*/
     QFile file2(filename2);
     if (!file2.open(QIODevice::ReadOnly | QIODevice::Text)) {
         errors.fileProcessingResult = fileProcessingCodes::inputCorrectFileNotExist;
@@ -406,7 +406,7 @@ void readFiles(const QString& filename1, const QString& filename2, QString& wron
         return;
     }
 
-    ///< Прочитать первые две строки из корректного файла
+    /**< Прочитать первые две строки из корректного файла*/
     QTextStream in2(&file2);
     if (in2.atEnd()) {
         errors.fileProcessingResult = fileProcessingCodes::correctFileIsEmpty;
@@ -416,10 +416,10 @@ void readFiles(const QString& filename1, const QString& filename2, QString& wron
         return;
     }
 
-    ///< Сохранение корректного предложения
+    /**< Сохранение корректного предложения*/
     correctSentence = in2.readLine();
 
-    ///< Проверка на наличие частей речи во второй строке
+    /**< Проверка на наличие частей речи во второй строке*/
     if (in2.atEnd()) {
         errors.fileProcessingResult = fileProcessingCodes::posTagsAreEmpty;
         errors.printInputDataMessage();
@@ -428,10 +428,10 @@ void readFiles(const QString& filename1, const QString& filename2, QString& wron
         return;
     }
 
-    ///< Сохранение частей речи
+    /**< Сохранение частей речи*/
     posTags = in2.readLine();
 
-    ///< Проверка на наличие третьей строки (которая не должна быть)
+    /**< Проверка на наличие третьей строки (которая не должна быть)*/
     if (!in2.atEnd()) {
         errors.fileProcessingResult = fileProcessingCodes::wrongStrCountInVerifiedFile;
         errors.printInputDataMessage();
@@ -439,10 +439,10 @@ void readFiles(const QString& filename1, const QString& filename2, QString& wron
         return;
     }
 
-    ///< Установить успешный результат обработки файлов в объекте InputDataError
+    /**< Установить успешный результат обработки файлов в объекте InputDataError*/
     errors.fileProcessingResult = fileProcessingCodes::filesProcessed;
 
-    ///< Закрыть оба файла
+    /**< Закрыть оба файла*/
     file1.close();
     file2.close();
 }
@@ -455,43 +455,43 @@ int main(int argc, char *argv[]) {
 //        return 1;
 //    }
 
-    QString wrongSentence; ///< Строка для хранения некорректного предложения
-    QString correctSentence; ///< Строка для хранения корректного предложения
-    QString posTags; ///< Строка для хранения pos-tags
-    InvalidInputError errors; ///< Объект для хранения ошибок при чтении файлов
-    SentenceDataError sentenceErrors; ///< Объект для храннеия ошибок при обработке предложений
+    QString wrongSentence; /**< Строка для хранения некорректного предложения*/
+    QString correctSentence; /**< Строка для хранения корректного предложения*/
+    QString posTags; /**< Строка для хранения pos-tags*/
+    InvalidInputError errors; /**< Объект для хранения ошибок при чтении файлов*/
+    SentenceDataError sentenceErrors; /**< Объект для храннеия ошибок при обработке предложений*/
 
-    ///< Чтение содержимого файлов
+    /**< Чтение содержимого файлов*/
     //readFiles(argv[1], argv[2], wrongSentence, correctSentence, posTags, errors);
     readFiles("C:\\Users\\Acer\\WordFormCheckerApp\\incorrect.txt", "C:\\Users\\Acer\\WordFormCheckerApp\\correct.txt", wrongSentence, correctSentence, posTags, errors);
 
-    ///< Проверка на ошибки при чтении файлов
+    /**< Проверка на ошибки при чтении файлов*/
     if (errors.fileProcessingResult != fileProcessingCodes::filesProcessed) {
 
         return -1; // Завершаем программу с кодом ошибки
     }
 
-    ///< Объекты для хранения предложений
-    Sentence incorrectSentence; ///< Объект некорректного предложения
-    Sentence correctSentenceObject; ///< Объект корректного предложения
+    /**< Объекты для хранения предложений*/
+    Sentence incorrectSentence; /**< Объект некорректного предложения*/
+    Sentence correctSentenceObject; /**< Объект корректного предложения*/
 
-    ///< Заполнение объектов Sentence данными из предложений
+    /**< Заполнение объектов Sentence данными из предложений*/
     writeToSentenceObjects(wrongSentence, correctSentence, posTags, incorrectSentence, correctSentenceObject, sentenceErrors);
 
-    ///< Проверка на ошибки при обработке предложений
+    /**< Проверка на ошибки при обработке предложений*/
     if (sentenceErrors.sentenceProcessingResult != sentencesProcessingCodes::sentencesProcessed) {
 
         return -1; // Завершаем программу с кодом ошибки
     }
 
-    ///< Поиск ошибок в предложениях
+    /**< Поиск ошибок в предложениях*/
     QList<ErrorInfo> errorsList = correctSentenceObject.compare(incorrectSentence);
 
-    ///< Запись ошибок в выходной файл
+    /**< Запись ошибок в выходной файл*/
     // writeErrorsToFile(errorsList, argv[3], incorrectSentence, correctSentenceObject, errors);
     writeErrorsToFile(errorsList, "C:\\Users\\Acer\\WordFormCheckerApp\\output.txt", incorrectSentence, correctSentenceObject, errors);
 
-    ///< Проверка на ошибки при чтении файла
+    /**< Проверка на ошибки при чтении файла*/
     if (errors.fileProcessingResult != fileProcessingCodes::filesProcessed) {
 
         return -1; // Завершаем программу с кодом ошибки
@@ -504,7 +504,7 @@ int main(int argc, char *argv[]) {
 }
 
 
-///< main для запусков тестов
+/**< main для запусков тестов*/
 //int main(int argc, char *argv[]) {
 //    QCoreApplication app(argc, argv);
 

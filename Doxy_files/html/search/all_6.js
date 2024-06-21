@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['fcount_0',['fcount',['../structss.html#a31b9e8373177240ee915f1771e412857',1,'ss']]],
+  ['fewertagsthanwords_1',['fewerTagsThanWords',['../main_8cpp.html#aecb65071d60eae6141bbe23d1bff32afa21fdbd26736f3ebe6c46d405c34d597b',1,'main.cpp']]],
+  ['fewerwordsthantags_2',['fewerWordsThanTags',['../main_8cpp.html#aecb65071d60eae6141bbe23d1bff32afa8aec83a89a51002b435efa444f135978',1,'main.cpp']]],
+  ['fileinfoflag_3',['fileinfoflag',['../wn_8h.html#a9bd16e76d1e6bf06a26b62c8ed77c96d',1,'wn.h']]],
+  ['fileprocessingcodes_4',['fileProcessingCodes',['../main_8cpp.html#aba8d1bb6feab4c4e70f606fc8a9ec8b2',1,'main.cpp']]],
+  ['fileprocessingresult_5',['fileProcessingResult',['../class_invalid_input_error.html#a9165f3f4d4ac19be35b22600b2691b36',1,'InvalidInputError']]],
+  ['filesprocessed_6',['filesProcessed',['../main_8cpp.html#aba8d1bb6feab4c4e70f606fc8a9ec8b2abef000334ed5cf036a9286a559edf9fd',1,'main.cpp']]],
+  ['findmistakeadj_7',['findMistakeAdj',['../class_word.html#a8ccfea1978fdd4f3c7745a05d5ea836e',1,'Word']]],
+  ['findmistakenoun_8',['findMistakeNoun',['../class_word.html#a2be5a7c76ef4484c0cc249899cc0e1e2',1,'Word']]],
+  ['findmistakenum_9',['findMistakeNum',['../class_word.html#a7f6a28f7d1b69afb6b1021682d563f6e',1,'Word']]],
+  ['findmistakeverb_10',['findMistakeVerb',['../class_word.html#afd54dabab4b42d2e5d0b757482cd2861',1,'Word']]],
+  ['findtheinfo_11',['findtheinfo',['../wn_8h.html#ac666060b6519e3dd68596ccc6862a12b',1,'wn.h']]],
+  ['findtheinfo_5fds_12',['findtheinfo_ds',['../wn_8h.html#ae6d1a662a659a6145327983b9e5794ad',1,'wn.h']]],
+  ['fmtsynset_13',['FmtSynset',['../wn_8h.html#aebf9fa4890194d329f40283752a53a1d',1,'wn.h']]],
+  ['fnflag_14',['fnflag',['../wn_8h.html#a1d676cc1c413222c770b5e2b1c315918',1,'wn.h']]],
+  ['fnum_15',['fnum',['../structss.html#a90ef575bd4857f1a855fec8afa06133d',1,'ss']]],
+  ['frames_16',['FRAMES',['../wn_8h.html#a51a51480d875f80355412fa95fd48c6c',1,'wn.h']]],
+  ['frametext_17',['frametext',['../wn_8h.html#a8eedfe8547ccd3acf3e736d6cf550ca0',1,'wn.h']]],
+  ['free_5findex_18',['free_index',['../wn_8h.html#ad5668ddeae3ec9b153c50118228c260f',1,'wn.h']]],
+  ['free_5fsyns_19',['free_syns',['../wn_8h.html#ab3f153cc84512c4530921caef6ffcdfb',1,'wn.h']]],
+  ['free_5fsynset_20',['free_synset',['../wn_8h.html#abc30411f526b5a7d9fe5097eedb06a07',1,'wn.h']]],
+  ['freq_21',['FREQ',['../wn_8h.html#a1b04ec1cde4d3032f558ed8ad05930a4',1,'wn.h']]],
+  ['frflag_22',['frflag',['../wn_8h.html#ace2d5321f9a0cc7ab6dc7904f228cf36',1,'wn.h']]],
+  ['frmid_23',['frmid',['../structss.html#a851f63b6d6b9b498c05069ac0d629558',1,'ss']]],
+  ['frmto_24',['frmto',['../structss.html#adbc4bb64467cc5c3277a26c328d62d13',1,'ss']]]
+];

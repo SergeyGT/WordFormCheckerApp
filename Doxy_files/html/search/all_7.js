@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['getdataoffset_0',['GetDataOffset',['../wn_8h.html#a632c534e075755ab97fba7a0f83211e1',1,'wn.h']]],
+  ['geterrortype_1',['getErrorType',['../class_error_info.html#a571464781032bdcd327da54600ad9fe7',1,'ErrorInfo']]],
+  ['getindex_2',['getindex',['../wn_8h.html#a1554af7969981df71194a82fbac236c3',1,'wn.h']]],
+  ['getkeyforoffset_3',['GetKeyForOffset',['../wn_8h.html#a2e2de089feb826d5225267e6511b65b7',1,'wn.h']]],
+  ['getoffsetforkey_4',['GetOffsetForKey',['../wn_8h.html#a1786c8fc8e627a498b823a059b324953',1,'wn.h']]],
+  ['getpolycount_5',['GetPolyCount',['../wn_8h.html#ad24908df716cc5e2e1932da2c3f435f3',1,'wn.h']]],
+  ['getpos_6',['GetPOS',['../wn_8h.html#af13dcfe929fc57f7dc66b46c7c6924b9',1,'wn.h']]],
+  ['getpos_7',['getpos',['../wn_8h.html#ae8585646cb45cb612579123da55958bc',1,'wn.h']]],
+  ['getpostag_8',['getPosTag',['../class_word.html#a6ca090c0d0b1356efb43789c96435ffd',1,'Word']]],
+  ['getptrtype_9',['getptrtype',['../wn_8h.html#a1494fb624f383cef4d73102e5e885f5c',1,'wn.h']]],
+  ['getsenseindex_10',['GetSenseIndex',['../wn_8h.html#a40c5f6afb1ad4c47bdbfd272c80779f3',1,'wn.h']]],
+  ['getsstype_11',['getsstype',['../wn_8h.html#a4ee9c14b2fbfe95ad20134ffa40bc07e',1,'wn.h']]],
+  ['getsynsetforsense_12',['GetSynsetForSense',['../wn_8h.html#ab14e2752fac296df0dedc957ddeb29e4',1,'wn.h']]],
+  ['gettagcnt_13',['GetTagcnt',['../wn_8h.html#a74c209d1d6f9f305d66d679d2a15d472',1,'wn.h']]],
+  ['getvalidindexpointer_14',['GetValidIndexPointer',['../wn_8h.html#ac8f98497094890c406fd84c6362f1d6a',1,'wn.h']]],
+  ['getwnsense_15',['GetWNSense',['../wn_8h.html#aa417ad75e0c7550953727c5d06649c99',1,'wn.h']]],
+  ['getwnstr_16',['GetWNStr',['../wn_8h.html#a896fab4b62753537b7cd87f00ddd7d47',1,'wn.h']]],
+  ['getword_17',['GetWORD',['../wn_8h.html#a7bf29b7215871b1b1fddf35812fa8a7d',1,'wn.h']]],
+  ['getwordid_18',['getWordID',['../class_word.html#a5cc0b9f22bc9d790ce75914505a50b89',1,'Word']]],
+  ['getwordindex_19',['getWordIndex',['../class_error_info.html#afbf5a7ca6b3511c2ac652c7009c7768e',1,'ErrorInfo']]],
+  ['getwordtext_20',['getWordText',['../class_word.html#a531f6071f4e05a146b28b827eab4938c',1,'Word']]]
+];

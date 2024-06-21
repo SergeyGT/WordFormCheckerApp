@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['wcount_0',['wcount',['../structss.html#af6d56eee3ae23982feaf061a4bc744aa',1,'ss']]],
+  ['wd_1',['wd',['../struct_index.html#ac836b68129dd28ed751e34b28701f6d2',1,'Index']]],
+  ['whichword_2',['whichword',['../structss.html#a64c10e3319c3941af3dfa93d688a61ee',1,'ss']]],
+  ['wn_2eh_3',['wn.h',['../wn_8h.html',1,'']]],
+  ['wngrep_4',['WNGREP',['../wn_8h.html#a76d1f7789810bf2c18077855d766b79c',1,'wn.h']]],
+  ['wninit_5',['wninit',['../wn_8h.html#a7c3a73d4cba1c58594475be7ea84ad6e',1,'wn.h']]],
+  ['wnrelease_6',['wnrelease',['../wn_8h.html#a331dee7e089358e555f5d5863ee8f96f',1,'wn.h']]],
+  ['wnresults_7',['wnresults',['../wn_8h.html#ac488b3558659ed09c96c84580a869d2e',1,'wn.h']]],
+  ['wnsense_8',['wnsense',['../structsi.html#af11b305927aaf7756d19b368c9773633',1,'si']]],
+  ['wnsns_9',['wnsns',['../structss.html#afb132c5c6332a6eb070e8bf4f596d95e',1,'ss']]],
+  ['wnsnsflag_10',['wnsnsflag',['../wn_8h.html#a3c8cc6def3cc09e577f03418ed38935c',1,'wn.h']]],
+  ['wnsnstostr_11',['WNSnsToStr',['../wn_8h.html#a401b81a277684e46274fad1d04dfb004',1,'wn.h']]],
+  ['word_12',['Word',['../class_word.html',1,'Word'],['../class_word.html#a7713ef2f28bcc507d5b391e48a8e2c4a',1,'Word::Word()=default'],['../class_word.html#a7c2dc8634cc9bc205974be908ceb0815',1,'Word::Word(const QString &amp;text, int idx, PosTag tag)'],['../class_word.html#a4d89fef27b767324c803f477572615e3',1,'Word::Word(QString text, PosTag tag, int wordId)']]],
+  ['word_13',['word',['../structsi.html#aa35a67e5e45bbaca9d67987fa30d2db7',1,'si']]],
+  ['word_2ecpp_14',['word.cpp',['../word_8cpp.html',1,'']]],
+  ['word_2eh_15',['word.h',['../word_8h.html',1,'']]],
+  ['wordbuf_16',['WORDBUF',['../wn_8h.html#a235f0cd2df77eae801d2f58cba56d87e',1,'wn.h']]],
+  ['words_17',['words',['../structss.html#acf11f446ef714859a43663592ca69011',1,'ss::words'],['../class_sentence.html#a66bebdc1b921cca206cff224ccd55a93',1,'Sentence::words']]],
+  ['wordtext_18',['wordText',['../class_word.html#a111a7b666e154ae471bff8ab295e73fc',1,'Word']]],
+  ['writeerrorstofile_19',['writeErrorsToFile',['../main_8cpp.html#aa2f19d4028949b6812f36b3a04ec557f',1,'main.cpp']]],
+  ['writetosentenceobjects_20',['writeToSentenceObjects',['../main_8cpp.html#afcef1e710638eb1e8e7a2cd654e8b71c',1,'main.cpp']]],
+  ['wrongformirregularverb_21',['wrongFormIrregularVerb',['../word_8h.html#a0455f547a8d97c35c868b184e0c92ffda4460b911aff4414383717bbede10356e',1,'word.h']]],
+  ['wrongpostag_22',['wrongPosTag',['../main_8cpp.html#aecb65071d60eae6141bbe23d1bff32afa568399375d88d62f5975215560d7690f',1,'main.cpp']]],
+  ['wrongstrcountincorrectfile_23',['wrongStrCountInCorrectFile',['../main_8cpp.html#aba8d1bb6feab4c4e70f606fc8a9ec8b2a1efa47ab021311760dc8fd6db3f3d5ca',1,'main.cpp']]],
+  ['wrongstrcountinverifiedfile_24',['wrongStrCountInVerifiedFile',['../main_8cpp.html#aba8d1bb6feab4c4e70f606fc8a9ec8b2a0b4c2257f5bdeba1f36881effc464fa4',1,'main.cpp']]]
+];

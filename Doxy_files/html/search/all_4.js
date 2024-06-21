@@ -1,0 +1,20 @@
+var searchData=
+[
+  ['datafile_0',['DATAFILE',['../wn_8h.html#a06e70837fbcaaca8503ffd61f0fa9c0a',1,'wn.h']]],
+  ['datafps_1',['datafps',['../wn_8h.html#aed1884da741a12bf453335f774052c16',1,'wn.h']]],
+  ['dblicense_5fsize_2',['DBLICENSE_SIZE',['../wn_8h.html#a5ce06ca66648c5399fbeeade9b9507f5',1,'wn.h']]],
+  ['default_5fdisplay_5fmessage_3',['default_display_message',['../wn_8h.html#a7472dc06e8b7af10b21d4ded935b91f4',1,'wn.h']]],
+  ['defaultpath_4',['DEFAULTPATH',['../wn_8h.html#a0672e2d34f3bbe2f6cdad6f307b9d1cf',1,'wn.h']]],
+  ['defn_5',['defn',['../structss.html#af0f10499bbe4fc24963c245d2d260a01',1,'ss']]],
+  ['delverbe_6',['delVerbE',['../word_8h.html#a0455f547a8d97c35c868b184e0c92ffdaee659e2152425cadbf3e4203d3d96ccc',1,'word.h']]],
+  ['derivation_7',['DERIVATION',['../wn_8h.html#a27df6f38a1288858c752abbb001176a6',1,'wn.h']]],
+  ['determiner_8',['Determiner',['../word_8h.html#ad1faa701fc04c99b600089b76112c2afaef1b00a5e35742c23f04c41e5b790303',1,'word.h']]],
+  ['dflag_9',['dflag',['../wn_8h.html#a0b6efcb2f51f593293dc30a262ea4438',1,'wn.h']]],
+  ['dictdir_10',['DICTDIR',['../wn_8h.html#a1a2880d536b5e881811ff2d40c405006',1,'wn.h']]],
+  ['display_5fmessage_11',['display_message',['../wn_8h.html#a356eddbb4a1edb1bca4118ce1e903fe4',1,'wn.h']]],
+  ['do_5ftrace_12',['do_trace',['../wn_8h.html#aba5c7d2b8f06993482112b28d53b6e40',1,'wn.h']]],
+  ['doubleconsonantadjer_13',['doubleConsonantAdjEr',['../word_8h.html#a0455f547a8d97c35c868b184e0c92ffdadda9c4886c18842f8786dfc077e37cfb',1,'word.h']]],
+  ['doubleconsonantadjest_14',['doubleConsonantAdjEst',['../word_8h.html#a0455f547a8d97c35c868b184e0c92ffda690aa4894ebdcaaaed2363849707e47d',1,'word.h']]],
+  ['doubleconsonanted_15',['doubleConsonantEd',['../word_8h.html#a0455f547a8d97c35c868b184e0c92ffda87fc16260e12cc60b3848baa4c6e0619',1,'word.h']]],
+  ['doubleconsonanting_16',['doubleConsonantIng',['../word_8h.html#a0455f547a8d97c35c868b184e0c92ffdae9baf8a2bb81c6e447acad68a71e32ed',1,'word.h']]]
+];
