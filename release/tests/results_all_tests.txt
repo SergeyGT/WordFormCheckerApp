@@ -1,0 +1,34 @@
+ 
+01 - Zero mistakes in sentence 
+Program correctly completed
+ 
+02 - One mistake in sentence 
+Program correctly completed
+ 
+03 - Two mistakes in sentence 
+Program correctly completed
+ 
+04 - Mistake in every word 
+Program correctly completed
+ 
+05 - Noun and Adjective mistake 
+Program correctly completed
+ 
+06 - Noun and verb mistake 
+Program correctly completed
+ 
+07 - Verb and number mistake 
+Program correctly completed
+ 
+08 - Adjective and number mistake 
+Program correctly completed
+ 
+09 - Mistake in number 
+Program correctly completed
+ 
+10 - Mistake in adjective 
+Program correctly completed
+ 
+11 - Complex test 
+Program correctly completed
+ 

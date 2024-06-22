@@ -1,0 +1,5 @@
+4 mistake(s) found.
+Irregular number form. Incorrectly used - oneth (word ¹2) Correct form: first
+Noun end -s. Incorrectly used - cates (word ¹3) Correct form: cats
+Double Consonant Adjective suffix -er. Incorrectly used - biger (word ¹5) Correct form: bigger
+Wrong form irregular verb. Incorrectly used - runed (word ¹10) Correct form: ran

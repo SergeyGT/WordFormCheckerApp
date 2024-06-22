@@ -1,0 +1,2 @@
+elephant bigger than lion
+NOUN ADJ PREPOSITION NOUN
