@@ -15,7 +15,7 @@ std::vector<QString> Word::IrregularNouns = {      "man", "woman", "child", "too
                                                    "cactus", "focus", "thesis", "analysis", "phenomenon", "criterion", "bacterium", "medium", "curriculum",
                                                    "datum", "memorandum", "erratum", "alumnus", "radius", "fungus", "syllabus", "nucleus"};
 
-std::vector<QString> Word::IrregularVerbs = {    "beat", "become", "begin", "bend", "bet", "bite", "bleed", "blow", "break", "breed", "bring", "build", "burn", "buy",
+std::vector<QString> Word::IrregularVerbs = {    "be", "beat", "become", "begin", "bend", "bet", "bite", "bleed", "blow", "break", "breed", "bring", "build", "burn", "buy",
                                                  "catch", "choose", "come", "cost", "cut", "do", "dig", "draw", "dream", "drink", "drive", "eat", "fall", "feed", "feel",
                                                  "fight", "find", "fly", "forget", "forgive", "freeze", "get", "give", "go", "grow", "have", "hear", "hide", "hit", "hold",
                                                  "hurt", "keep", "know", "lay", "lead", "lean", "leave", "lend", "let", "lie", "make", "mean", "meet", "pay", "put", "quit",
@@ -165,6 +165,8 @@ ErrorInfo Word::findMistakeNoun(Word other) {
         // 3. Приведение правильного слова в начальную форму
          QString baseForm = basForm(other.wordText, NOUN);
 
+
+
         /* 3.2. Проверка наличия существительного в контейнере OnlyPluralNouns - только во множественном числе.*/
         if (std::find(OnlyPluralNouns.begin(), OnlyPluralNouns.end(), baseForm) != OnlyPluralNouns.end()) {
             errorInfo.error = errorType::nounsOnlyPluralForm;
@@ -174,6 +176,12 @@ ErrorInfo Word::findMistakeNoun(Word other) {
         /* 3.3. Проверка наличия существительного в контейнере IrregularNouns - неправильных существительных*/
         if (std::find(IrregularNouns.begin(), IrregularNouns.end(), baseForm) != IrregularNouns.end()) {
             errorInfo.error = errorType::nounsIrregularPluralForm;
+            return errorInfo;
+        }
+
+        if(baseForm.toLower()==other.wordText)
+        {
+            errorInfo.error = errorType::infiniteNoun;
             return errorInfo;
         }
 
@@ -197,6 +205,9 @@ ErrorInfo Word::findMistakeNoun(Word other) {
             errorInfo.error = errorType::nounEndES;
             return errorInfo;
         }
+
+        errorInfo.error = errorType::unknownError;
+        return errorInfo;
     }
 }
 
@@ -230,6 +241,12 @@ ErrorInfo Word::findMistakeVerb(Word other) {
 
     /* Приводим глагол в начальную форму*/
     QString baseFormStr = basForm(other.wordText, VERB);
+
+    if(baseFormStr.toLower()==other.wordText)
+    {
+        errorInfo.error = errorType::infiniteVerb;
+        return errorInfo;
+    }
 
     /* Проверка наличия слова в IrregularVerbs*/
     bool foundIrregular = std::find(IrregularVerbs.begin(), IrregularVerbs.end(), baseFormStr) != IrregularVerbs.end();
@@ -289,6 +306,8 @@ ErrorInfo Word::findMistakeVerb(Word other) {
         errorInfo.error = errorType::verbEndEs;
         return errorInfo;
     }
+    errorInfo.error = errorType::unknownError;
+    return errorInfo;
 }
 
 ErrorInfo Word::findMistakeAdj(Word other) {
@@ -320,7 +339,7 @@ ErrorInfo Word::findMistakeAdj(Word other) {
     /* Получение начальной формы текущего слова*/
     QString baseForm = basForm(other.wordText, ADJ);
 
-    /* 2. Проверка наличия слова в списке IrregularAdj*/
+       /* 2. Проверка наличия слова в списке IrregularAdj*/
     if (std::find(IrregularAdj.begin(), IrregularAdj.end(), baseForm) != IrregularAdj.end()) {
         errorInfo.error = errorType::incorrectDegreesComparisonAdj;
         return errorInfo;
@@ -379,6 +398,9 @@ ErrorInfo Word::findMistakeAdj(Word other) {
         errorInfo.error = errorType::incorrectFormSuperlatAdj;
         return errorInfo;
     }
+
+    errorInfo.error = errorType::unknownError;
+    return errorInfo;
 }
 
 ErrorInfo Word::findMistakeNum(Word other) {
@@ -417,6 +439,9 @@ ErrorInfo Word::findMistakeNum(Word other) {
         errorInfo.error = errorType::incorrectNumForm;
         return errorInfo;
     }
+
+    errorInfo.error = errorType::unknownError;
+    return errorInfo;
 }
 
 QList<ErrorInfo> Sentence::compare(Sentence other) {
